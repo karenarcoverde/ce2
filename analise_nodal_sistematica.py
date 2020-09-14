@@ -16,21 +16,26 @@ import numpy as np
 
 def montar_q(lista_componentes,q,index):
 	
-	print(lista_componentes[index + 2])
-	print(lista_componentes[index + 1])
 	
-	if (lista_componentes[index + 1] == 0):
-		(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 3])	
+	##I
+	if (lista_componentes[index][0] == 'I'):
+		if (lista_componentes[index + 1] == 0):
+			(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 3])	
 		
 	
-	if (lista_componentes[index + 2] == 0):
-		(q[int(lista_componentes[index + 1]) - 1][0]) += -(lista_componentes[index + 3])
+		if (lista_componentes[index + 2] == 0):
+			(q[int(lista_componentes[index + 1]) - 1][0]) += -(lista_componentes[index + 3])
 		
 		
 
-	elif ((lista_componentes[index + 1] != 0) and (lista_componentes[index + 2] != 0)):
-		(q[int(lista_componentes[index + 1]) - 1][0]) += -(lista_componentes[index + 3])
-		(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 3])
+		elif ((lista_componentes[index + 1] != 0) and (lista_componentes[index + 2] != 0)):
+			(q[int(lista_componentes[index + 1]) - 1][0]) += -(lista_componentes[index + 3])
+			(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 3])
+		
+		
+	##V
+	if (lista_componentes[index][0] == 'V'):
+		(q[q.shape[0]-1][0]) += (lista_componentes[index + 3])
 		
 		
 	return q
@@ -67,6 +72,7 @@ def montar_yn(lista_componentes, yn, index):
 		##V
 		if (lista_componentes[index][0] == 'V'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
+			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 			
 			
 	
@@ -88,6 +94,8 @@ def montar_yn(lista_componentes, yn, index):
 		##V
 		if (lista_componentes[index][0] == 'V'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
+			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
+			
 			
 		
 		
@@ -119,6 +127,9 @@ def montar_yn(lista_componentes, yn, index):
 		if (lista_componentes[index][0] == 'V'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
+			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
+			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
+			
 			
 		
 	return yn
@@ -146,14 +157,13 @@ def menu():
 	
 	print("INSTRUÇÕES")
 	print("Digite:")      
-	print("PARA RESISTÊNCIA: R+ÍNDICE DO COMPONENTE     Nó k     Nó i    valor da resistência")
-	print("PARA FONTE DE CORRENTE INDEPENDENTE: I+ÍNDICE DO COMPONENTE     Nó k     Nó i    valor da fonte de corrente")
-	print("PARA FONTE DE TENSÃO INDEPENDENTE: V+ÍNDICE DO COMPONENTE     Nó k     Nó i    valor da fonte de tensão")
-	print("PARA FONTE DE TENSÃO INDEPENDENTE: V+ÍNDICE DO COMPONENTE     Nó k     Nó i    valor da fonte de tensão")
-	print("PARA FONTE DE CORRENTE CONTROLADA POR TENSÃO: G+ÍNDICE DO COMPONENTE     Nó k     Nó i         Nó f  Nó g      valor do G")
-	print("PARA FONTE DE CORRENTE CONTROLADA POR CORRENTE: B+ÍNDICE DO COMPONENTE     Nó k              Nó i  Nó f  Nó g     valor do B")
-	print("PARA FONTE DE TENSÃO CONTROLADA POR TENSÃO: A+ÍNDICE DO COMPONENTE     Nó k     Nó i         Nó f  Nó g       valor do A")
-	print("PARA FONTE DE TENSÃO CONTROLADA POR CORRENTE: H+ÍNDICE DO COMPONENTE     Nó k     Nó i         Nó f  Nó g       valor do H")
+	print("PARA RESISTÊNCIA: R+ÍNDICE DO COMPONENTE Nó k Nó i valor da resistência")
+	print("PARA FONTE DE CORRENTE INDEPENDENTE: I+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de corrente")
+	print("PARA FONTE DE TENSÃO INDEPENDENTE: V+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de tensão")
+	print("PARA FONTE DE CORRENTE CONTROLADA POR TENSÃO: G+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do G")
+	print("PARA FONTE DE CORRENTE CONTROLADA POR CORRENTE: B+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do B")
+	print("PARA FONTE DE TENSÃO CONTROLADA POR TENSÃO: A+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do A")
+	print("PARA FONTE DE TENSÃO CONTROLADA POR CORRENTE: H+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do H")
 	print()
 	print("IMPORTANTE: RESPEITAR A POLARIDADE DAS FONTES DE TENSÃO E CORRENTE. CONSIDERAR NÓ k e NÓ f (POLO POSITIVO), NÓ i e Nó g (POLO NEGATIVO)") 
 	print("Digite 0 para SAIR")
@@ -193,7 +203,7 @@ def menu():
 	
 	yn = np.zeros((maior_valor_nó, maior_valor_nó))
 	q = np.zeros((maior_valor_nó,1))
-	print(q)
+	
 	
 	
 	
@@ -222,6 +232,7 @@ def menu():
 				b[:-1,:] = q
 				q = b
 				yn = montar_yn(lista_componentes,yn, index)
+				q = montar_q(lista_componentes,q, index)
 				
 				
 				
@@ -234,21 +245,12 @@ def menu():
 	#montar_m (yn,q)
 			
 	print(yn)	
-	#print(q)
+	print(q)
 	
 	#print(m)
 	
 	#resultado_final(m)
 				
-		
 	
-	
-
-
-
-
-
-
-
 ######## chamada ao menu
 menu()
