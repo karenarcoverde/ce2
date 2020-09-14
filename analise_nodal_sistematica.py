@@ -11,9 +11,10 @@
 import numpy as np
 
 
+##################### Funcoes #####################
+
 #def resultado_final (m):
 	
-
 def montar_q(lista_componentes,q,index):
 	
 	
