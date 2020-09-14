@@ -1,4 +1,4 @@
-# Programa analise_nodal_modificada.py
+# Programa analise_nodal_sistematica.py
 # Autora: Karen dos Anjos Arcoverde
 # Data: 12/09/2020
 #
