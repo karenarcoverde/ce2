@@ -64,6 +64,10 @@ def montar_yn(lista_componentes, yn, index):
 		
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += -(lista_componentes[index + 5])
+		##V
+		if (lista_componentes[index][0] == 'V'):
+			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
+			
 			
 	
 	if (lista_componentes[index + 2] == 0): #corrente saindo do nó
@@ -81,6 +85,10 @@ def montar_yn(lista_componentes, yn, index):
 		
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
+		##V
+		if (lista_componentes[index][0] == 'V'):
+			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
+			
 		
 		
 		
@@ -93,15 +101,7 @@ def montar_yn(lista_componentes, yn, index):
 			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -(1/(lista_componentes[index + 3]))
 			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -(1/(lista_componentes[index + 3]))
 		##G
-		if (lista_componentes[index][0] == 'G'):
-			print(lista_componentes[index + 5])
-			print(lista_componentes[index][0])
-			print(lista_componentes[index + 3])
-			print(lista_componentes[index + 4])
-			print(lista_componentes[index + 1])
-			print(lista_componentes[index + 2])
-			
-			
+		if (lista_componentes[index][0] == 'G'):		
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += -(lista_componentes[index + 5])
@@ -115,6 +115,10 @@ def montar_yn(lista_componentes, yn, index):
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])		
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += -(lista_componentes[index + 5])
+		##V
+		if (lista_componentes[index][0] == 'V'):
+			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
+			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
 			
 		
 	return yn
@@ -207,19 +211,30 @@ def menu():
 				yn = montar_yn(lista_componentes,yn, index)
 			
 			if (lista_componentes[index][0] == 'V'): #fonte de tensão independente
+				#adiciona linha e coluna em yn
+				dimensao_yn = (yn.shape)
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b[:-1,:-1] = yn
+				yn = b
+				#adiciona linha em q
+				dimensao_q = (q.shape)
+				b = np.zeros((dimensao_yn[0] + 1,1))
+				b[:-1,:] = q
+				q = b
 				yn = montar_yn(lista_componentes,yn, index)
+				
 				
 				
 			index += 1
 			
-	print(yn)	
-	print(q)
+	#print(yn)	
+	#print(q)
 	# yn*m = q
 	# m = inv(yn)*q
 	#montar_m (yn,q)
 			
 	print(yn)	
-	print(q)
+	#print(q)
 	
 	#print(m)
 	
