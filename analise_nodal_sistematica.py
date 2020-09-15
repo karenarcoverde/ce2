@@ -13,7 +13,7 @@ import numpy as np
 from scipy import linalg
 
 
-##################### Funcoes #####################
+##################################################################### Funcoes #####################################################################
 
 def resultado_final (m,maior_valor_nó,dimensoes_extras):
 	indice = 0
@@ -312,7 +312,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			
 	return yn
 
-##################### Programa Principal #####################
+##################################################################### Programa Principal #####################################################################
 def menu():
 	componente = ""
 	dimensoes_extras = 0 
