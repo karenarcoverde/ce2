@@ -41,15 +41,9 @@ def montar_q(lista_componentes,q,index):
 		
 	return q
 	
-	
-	
-
-
-
 #def montar_m (yn,q):
 	#inv_yn = np.linalg.inv(yn)
 	#m = np.multiply(inv_yn, q)
-
 
 def montar_yn(lista_componentes, yn, index, corrente):
 
@@ -293,14 +287,8 @@ def montar_yn(lista_componentes, yn, index, corrente):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1	
 			
 				if (lista_componentes[index + 1] != 0 and lista_componentes[index + 2] == 0):
-					(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
-		
-			
-			
-			
-		
+					(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1	
 	return yn
-
 
 ##################### Programa Principal #####################
 def menu():
