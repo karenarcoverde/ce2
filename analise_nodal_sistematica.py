@@ -8,12 +8,24 @@
 #
 
 
+#importando bibliotecas numpy e scipy para matrizes 
 import numpy as np
+from scipy import linalg
 
 
 ##################### Funcoes #####################
 
-#def resultado_final (m):
+def resultado_final (m,maior_valor_nó,dimensoes_extras):
+	indice = 0
+	
+	for indice in range (maior_valor_nó):
+		print("e"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
+		
+	indice = 0	
+	for indice in range (dimensoes_extras):
+		print("j"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
+		
+
 	
 def montar_q(lista_componentes,q,index):
 	
@@ -41,9 +53,11 @@ def montar_q(lista_componentes,q,index):
 		
 	return q
 	
-#def montar_m (yn,q):
-	#inv_yn = np.linalg.inv(yn)
-	#m = np.multiply(inv_yn, q)
+def montar_m (yn,q):
+	inv_yn = np.linalg.inv(yn)
+	m = np.dot(inv_yn, q)
+	
+	return m
 
 def montar_yn(lista_componentes, yn, index, corrente):
 
@@ -299,6 +313,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 ##################### Programa Principal #####################
 def menu():
 	componente = ""
+	dimensoes_extras = 0 
 	indice = 0
 	index = 0
 	corrente = ""
@@ -387,6 +402,7 @@ def menu():
 				q = b
 				yn = montar_yn(lista_componentes,yn, index,corrente)
 				q = montar_q(lista_componentes,q, index)
+				dimensoes_extras += 1
 				
 			if (lista_componentes[index][0] == 'B'): #fonte de corrente controlada por corrente
 				#adiciona linha e coluna em yn
@@ -400,6 +416,7 @@ def menu():
 				b[:-1,:] = q
 				q = b
 				yn = montar_yn(lista_componentes,yn, index, corrente)
+				dimensoes_extras += 1
 				
 				
 			if (lista_componentes[index][0] == 'A'): #fonte de tensão controlada por tensão
@@ -414,6 +431,7 @@ def menu():
 				b[:-1,:] = q
 				q = b
 				yn = montar_yn(lista_componentes,yn, index, corrente)
+				dimensoes_extras += 1
 				
 			if (lista_componentes[index][0] == 'H'): #fonte de tensão controlada por corrente
 				##jx
@@ -429,6 +447,7 @@ def menu():
 				q = b
 				corrente = "jx"
 				yn = montar_yn(lista_componentes,yn, index, corrente)
+				dimensoes_extras += 1
 				
 				##jy
 				#adiciona linha e coluna em yn
@@ -443,6 +462,7 @@ def menu():
 				q = b
 				corrente = "jy"
 				yn = montar_yn(lista_componentes,yn, index, corrente)
+				dimensoes_extras += 1
 				
 			index += 1
 			
@@ -450,14 +470,13 @@ def menu():
 	#print(q)
 	# yn*m = q
 	# m = inv(yn)*q
-	#montar_m (yn,q)
+	m = montar_m (yn,q)
 			
-	print(yn)	
-	print(q)
+	#print(yn)	
+	#print(q)
 	
 	#print(m)
-	
-	#resultado_final(m)
+	resultado_final(m,maior_valor_nó,dimensoes_extras)
 				
 	
 ######## chamada ao menu
