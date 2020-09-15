@@ -136,7 +136,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += 1
 			
-			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
+				(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
 			
 	
 	if (lista_componentes[index + 2] == 0): #corrente saindo do nó
@@ -209,7 +209,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
 			
-			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
+				(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
 				
 		
 		
@@ -308,7 +308,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				if (lista_componentes[index + 1] != 0 and lista_componentes[index + 2] == 0):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1	
 					
-			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
+				(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
 			
 	return yn
 
@@ -321,20 +321,26 @@ def menu():
 	corrente = ""
 	maior_valor_nó = 0
 	lista_componentes = []
-	
-	
-	print("INSTRUÇÕES")
-	print("Digite:")      
-	print("PARA RESISTÊNCIA: R+ÍNDICE DO COMPONENTE Nó k Nó i valor da resistência")
-	print("PARA FONTE DE CORRENTE INDEPENDENTE: I+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de corrente")
-	print("PARA FONTE DE TENSÃO INDEPENDENTE: V+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de tensão")
-	print("PARA FONTE DE CORRENTE CONTROLADA POR TENSÃO: G+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do G")
-	print("PARA FONTE DE CORRENTE CONTROLADA POR CORRENTE: B+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do B")
-	print("PARA FONTE DE TENSÃO CONTROLADA POR TENSÃO: A+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do A")
-	print("PARA FONTE DE TENSÃO CONTROLADA POR CORRENTE: H+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do H")
 	print()
-	print("IMPORTANTE: RESPEITAR A POLARIDADE DAS FONTES DE TENSÃO E CORRENTE. CONSIDERAR NÓ k e NÓ f (POLO POSITIVO), NÓ i e Nó g (POLO NEGATIVO)") 
-	print("Digite 0 para SAIR")
+	print("###########################################################################################################")
+	print("## INSTRUÇÕES                                                                                            ##")
+	print("## Digite:                                                                                               ##")      
+	print("## PARA RESISTÊNCIA: R+ÍNDICE DO COMPONENTE Nó k Nó i valor da resistência                               ##")
+	print("## PARA FONTE DE CORRENTE INDEPENDENTE: I+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de corrente      ##")
+	print("## PARA FONTE DE TENSÃO INDEPENDENTE: V+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de tensão          ##")
+	print("## PARA FONTE DE CORRENTE CONTROLADA POR TENSÃO: G+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do G   ##")
+	print("## PARA FONTE DE CORRENTE CONTROLADA POR CORRENTE: B+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do B ##")
+	print("## PARA FONTE DE TENSÃO CONTROLADA POR TENSÃO: A+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do A     ##")
+	print("## PARA FONTE DE TENSÃO CONTROLADA POR CORRENTE: H+ÍNDICE DO COMPONENTE Nó k Nó i Nó f Nó g valor do H   ##")
+	print("###########################################################################################################")
+	print()
+	print("#############################################################################################################################################")
+	print("## IMPORTANTE: RESPEITAR A POLARIDADE DAS FONTES DE TENSÃO E CORRENTE. CONSIDERAR NÓ k e NÓ f (POLO POSITIVO), NÓ i e Nó g (POLO NEGATIVO) ##")
+	print("#############################################################################################################################################")
+	print()
+	print("########################")
+	print("## Digite 0 para SAIR ##")
+	print("########################")
 	print()
 	
 	
