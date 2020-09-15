@@ -103,7 +103,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				
 		##H
 		if (lista_componentes[index][0] == 'H'):
-			if (corrente = "jx"):
+			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -116,7 +116,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += -1
 					
-			if (corrente = "jy"):
+			if (corrente == "jy"):
 				(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += 1
 			
@@ -176,7 +176,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				
 		##H
 		if (lista_componentes[index][0] == 'H'):
-			if (corrente = "jx"):
+			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -189,7 +189,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += -1
 					
-			if (corrente = "jy"):
+			if (corrente == "jy"):
 				(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
 			
@@ -266,7 +266,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			
 		##H
 		if (lista_componentes[index][0] == 'H'):
-			if (corrente = "jx"):
+			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -279,7 +279,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += -1
 					
-			if (corrente = "jy"):
+			if (corrente == "jy"):
 				(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1		
 				if (lista_componentes[index + 1] != 0 and lista_componentes[index + 2] != 0):
@@ -301,6 +301,7 @@ def menu():
 	componente = ""
 	indice = 0
 	index = 0
+	corrente = ""
 	maior_valor_nó = 0
 	lista_componentes = []
 	
