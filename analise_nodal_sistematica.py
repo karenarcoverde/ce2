@@ -120,6 +120,8 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += 1
 			
+			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
+			
 	
 	if (lista_componentes[index + 2] == 0): #corrente saindo do nó
 		## R
@@ -190,7 +192,8 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			if (corrente = "jy"):
 				(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
-				
+			
+			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
 				
 		
 		
@@ -288,6 +291,9 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			
 				if (lista_componentes[index + 1] != 0 and lista_componentes[index + 2] == 0):
 					(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1	
+					
+			(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
+			
 	return yn
 
 ##################### Programa Principal #####################
