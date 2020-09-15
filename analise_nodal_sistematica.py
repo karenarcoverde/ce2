@@ -21,9 +21,11 @@ def resultado_final (m,maior_valor_nó,dimensoes_extras):
 	for indice in range (maior_valor_nó):
 		print("e"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
 		
-	indice = 0	
-	for indice in range (dimensoes_extras):
-		print("j"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
+	indice = 0
+	if (dimensoes_extras != 0):
+		indice += maior_valor_nó
+		for (indice) in range (indice,(dimensoes_extras + maior_valor_nó)):
+			print("j"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
 		
 
 	
@@ -31,7 +33,7 @@ def montar_q(lista_componentes,q,index):
 	
 	
 	##I
-	if (lista_componentes[index][0] == 'I'):
+	if (lista_componentes[index][0] == 'I' or lista_componentes[index][0] == 'i'):
 		if (lista_componentes[index + 1] == 0):
 			(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 3])	
 		
@@ -47,7 +49,7 @@ def montar_q(lista_componentes,q,index):
 		
 		
 	##V
-	if (lista_componentes[index][0] == 'V'):
+	if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'):
 		(q[q.shape[0]-1][0]) += (lista_componentes[index + 3])
 		
 		
@@ -65,10 +67,10 @@ def montar_yn(lista_componentes, yn, index, corrente):
 	
 	if (lista_componentes[index + 1] == 0): #corrente entrando no nó
 		##R
-		if (lista_componentes[index][0] == 'R'):
+		if (lista_componentes[index][0] == 'R' or lista_componentes[index][0] == 'r'):
 			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += (1/(lista_componentes[index + 3])) 
 		##G
-		if (lista_componentes[index][0] == 'G'):
+		if (lista_componentes[index][0] == 'G' or lista_componentes[index][0] == 'g'):
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += -(lista_componentes[index + 5])
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 4]) - 1]) += (lista_componentes[index + 5])
@@ -79,12 +81,12 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += -(lista_componentes[index + 5])
 		##V
-		if (lista_componentes[index][0] == 'V'):
+		if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
 			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 		
 		##B
-		if (lista_componentes[index][0] == 'B'):
+		if (lista_componentes[index][0] == 'B' or lista_componentes[index][0] == 'b'):
 			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -(lista_componentes[index + 5])
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += 1
@@ -102,7 +104,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				
 		
 		##A
-		if (lista_componentes[index][0] == 'A'):
+		if (lista_componentes[index][0] == 'A' or lista_componentes[index][0] == 'a'):
 			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += 1
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -116,7 +118,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 				
 		##H
-		if (lista_componentes[index][0] == 'H'):
+		if (lista_componentes[index][0] == 'H' or lista_componentes[index][0] == 'h'):
 			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
@@ -139,10 +141,10 @@ def montar_yn(lista_componentes, yn, index, corrente):
 	
 	if (lista_componentes[index + 2] == 0): #corrente saindo do nó
 		## R
-		if (lista_componentes[index][0] == 'R'):
+		if (lista_componentes[index][0] == 'R' or lista_componentes[index][0] == 'r'):
 			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += (1/(lista_componentes[index + 3])) 
 		## G
-		if (lista_componentes[index][0] == 'G'):
+		if (lista_componentes[index][0] == 'G' or lista_componentes[index][0] == 'g'):
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += -(lista_componentes[index + 5])
@@ -153,12 +155,12 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] == 0):
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 		##V
-		if (lista_componentes[index][0] == 'V'):
+		if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 		
 		##B
-		if (lista_componentes[index][0] == 'B'):
+		if (lista_componentes[index][0] == 'B' or lista_componentes[index][0] == 'b'):
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += (lista_componentes[index + 5])
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += 1
@@ -175,7 +177,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 		
 		##A
-		if (lista_componentes[index][0] == 'A'):		
+		if (lista_componentes[index][0] == 'A' or lista_componentes[index][0] == 'a'):		
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -189,7 +191,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[yn.shape[0]-1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 				
 		##H
-		if (lista_componentes[index][0] == 'H'):
+		if (lista_componentes[index][0] == 'H' or lista_componentes[index][0] == 'h'):
 			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
@@ -214,13 +216,13 @@ def montar_yn(lista_componentes, yn, index, corrente):
 
 	elif ((lista_componentes[index + 1] != 0) and (lista_componentes[index + 2] != 0)):
 		##R
-		if (lista_componentes[index][0] == 'R'):
+		if (lista_componentes[index][0] == 'R' or lista_componentes[index][0] == 'r'):
 			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += (1/(lista_componentes[index + 3]))
 			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += (1/(lista_componentes[index + 3]))
 			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -(1/(lista_componentes[index + 3]))
 			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -(1/(lista_componentes[index + 3]))
 		##G
-		if (lista_componentes[index][0] == 'G'):		
+		if (lista_componentes[index][0] == 'G' or lista_componentes[index][0] == 'g'):		
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += -(lista_componentes[index + 5])
@@ -235,7 +237,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 3]) - 1]) += (lista_componentes[index + 5])		
 				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 3]) - 1]) += -(lista_componentes[index + 5])
 		##V
-		if (lista_componentes[index][0] == 'V'):
+		if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'):
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += 1
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 2]) - 1]) += -1
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
@@ -243,7 +245,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 		
 		
 		##B
-		if (lista_componentes[index][0] == 'B'):
+		if (lista_componentes[index][0] == 'B' or lista_componentes[index][0] == 'b'):
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += (lista_componentes[index + 5])
 			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -(lista_componentes[index + 5])
 			if (lista_componentes[index + 3] != 0 and lista_componentes[index + 4] != 0):
@@ -262,7 +264,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 		
 		
 		##A
-		if (lista_componentes[index][0] == 'A'):
+		if (lista_componentes[index][0] == 'A' or lista_componentes[index][0] == 'a'):
 			(yn[int(lista_componentes[index + 1]) - 1][yn.shape[1]-1]) += 1
 			(yn[int(lista_componentes[index + 2]) - 1][yn.shape[1]-1]) += -1		
 			(yn[yn.shape[0]-1][int(lista_componentes[index + 1]) - 1]) += -1
@@ -279,7 +281,7 @@ def montar_yn(lista_componentes, yn, index, corrente):
 			
 			
 		##H
-		if (lista_componentes[index][0] == 'H'):
+		if (lista_componentes[index][0] == 'H' or lista_componentes[index][0] == 'h'):
 			if (corrente == "jx"):
 				(yn[int(lista_componentes[index + 3]) - 1][yn.shape[1]-1]) += 1
 				(yn[int(lista_componentes[index + 4]) - 1][yn.shape[1]-1]) += -1		
@@ -377,19 +379,19 @@ def menu():
 		if (type(lista_componentes[index]) is float):
 			index += 1
 		else:
-			if (lista_componentes[index][0] == 'R'): #resistência
+			if (lista_componentes[index][0] == 'R' or lista_componentes[index][0] == 'r'): #resistência
 				yn = montar_yn(lista_componentes,yn, index,corrente)
 				
 				
-			if (lista_componentes[index][0] == 'I'): #fonte de corrente independente			
+			if (lista_componentes[index][0] == 'I' or lista_componentes[index][0] == 'i'): #fonte de corrente independente			
 				q = montar_q(lista_componentes,q, index)
 				
 				
-			if (lista_componentes[index][0] == 'G'): #fonte de corrente controlada por tensão 
+			if (lista_componentes[index][0] == 'G' or lista_componentes[index][0] == 'g'): #fonte de corrente controlada por tensão 
 				yn = montar_yn(lista_componentes,yn, index,corrente)
 				
 			
-			if (lista_componentes[index][0] == 'V'): #fonte de tensão independente
+			if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'): #fonte de tensão independente
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
 				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
@@ -404,7 +406,7 @@ def menu():
 				q = montar_q(lista_componentes,q, index)
 				dimensoes_extras += 1
 				
-			if (lista_componentes[index][0] == 'B'): #fonte de corrente controlada por corrente
+			if (lista_componentes[index][0] == 'B' or lista_componentes[index][0] == 'b'): #fonte de corrente controlada por corrente
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
 				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
@@ -419,7 +421,7 @@ def menu():
 				dimensoes_extras += 1
 				
 				
-			if (lista_componentes[index][0] == 'A'): #fonte de tensão controlada por tensão
+			if (lista_componentes[index][0] == 'A' or lista_componentes[index][0] == 'a'): #fonte de tensão controlada por tensão
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
 				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
@@ -433,7 +435,7 @@ def menu():
 				yn = montar_yn(lista_componentes,yn, index, corrente)
 				dimensoes_extras += 1
 				
-			if (lista_componentes[index][0] == 'H'): #fonte de tensão controlada por corrente
+			if (lista_componentes[index][0] == 'H' or lista_componentes[index][0] == 'h'): #fonte de tensão controlada por corrente
 				##jx
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
