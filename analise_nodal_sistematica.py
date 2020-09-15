@@ -323,7 +323,7 @@ def menu():
 	lista_componentes = []
 	print()
 	print("###########################################################################################################")
-	print("## INSTRUÇÕES                                                                                            ##")
+	print("## ------------------------------------------INSTRUÇÕES ------------------------------------------------ ##")
 	print("## Digite:                                                                                               ##")      
 	print("## PARA RESISTÊNCIA: R+ÍNDICE DO COMPONENTE Nó k Nó i valor da resistência                               ##")
 	print("## PARA FONTE DE CORRENTE INDEPENDENTE: I+ÍNDICE DO COMPONENTE Nó k Nó i valor da fonte de corrente      ##")
