@@ -12,6 +12,9 @@
 import numpy as np
 from scipy import linalg
 from numpy import *
+import cmath
+import math
+import numba 
 
 
 ##################################################################### Funcoes #####################################################################
@@ -32,10 +35,9 @@ def resultado_final (m,maior_valor_nó,dimensoes_extras):
 	
 def montar_q(lista_componentes,q,index):
 	
-	
 	##I
 	if (lista_componentes[index][0] == 'I' or lista_componentes[index][0] == 'i'):
-		if (lista_componentes[index + 3] == "DC" or lista_componentes[index + 3] == "dc"):
+		if (lista_componentes[index + 3] == 'DC' or lista_componentes[index + 3] == 'dc'):
 			if (lista_componentes[index + 1] == 0):
 				(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 4])	
 		
@@ -46,14 +48,28 @@ def montar_q(lista_componentes,q,index):
 			elif ((lista_componentes[index + 1] != 0) and (lista_componentes[index + 2] != 0)):
 				(q[int(lista_componentes[index + 1]) - 1][0]) += -(lista_componentes[index + 4])
 				(q[int(lista_componentes[index + 2]) - 1][0]) += (lista_componentes[index + 4])
+			
+		if (lista_componentes[index + 3] == 'SIN' or lista_componentes[index + 3] == 'sin'):	
+			if (lista_componentes[index + 1] == 0):
+				(q[int(lista_componentes[index + 2]) - 1][0]) += cmath.rect(lista_componentes[index + 5],lista_componentes[index + 9])
+		
+	
+			if (lista_componentes[index + 2] == 0):
+				(q[int(lista_componentes[index + 1]) - 1][0]) += -cmath.rect(lista_componentes[index + 5],lista_componentes[index + 9])
+		
+			elif ((lista_componentes[index + 1] != 0) and (lista_componentes[index + 2] != 0)):
+				(q[int(lista_componentes[index + 1]) - 1][0]) += -cmath.rect(lista_componentes[index + 5],lista_componentes[index + 9])
+				(q[int(lista_componentes[index + 2]) - 1][0]) += cmath.rect(lista_componentes[index + 5],lista_componentes[index + 9])
+		
 		
 		
 	##V
 	if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'):
-		if (lista_componentes[index + 3] == "DC" or lista_componentes[index + 3] == "dc"):
+		if (lista_componentes[index + 3] == 'DC' or lista_componentes[index + 3] == 'dc'):
 			(q[q.shape[0]-1][0]) += (lista_componentes[index + 4])
-		
-		
+			
+		if (lista_componentes[index + 3] == 'SIN' or lista_componentes[index + 3] == 'sin'):
+			(q[q.shape[0]-1][0]) += cmath.rect(lista_componentes[index + 5],lista_componentes[index + 9])		
 	return q
 	
 def montar_m (yn,q):
@@ -62,7 +78,7 @@ def montar_m (yn,q):
 	
 	return m
 
-def montar_yn(lista_componentes, yn, index, corrente,w):
+def montar_yn(lista_componentes, yn, index, corrente,w,gama):
 
 	
 	
@@ -141,11 +157,33 @@ def montar_yn(lista_componentes, yn, index, corrente,w):
 				
 		##C		
 		if (lista_componentes[index][0] == 'C' or lista_componentes[index][0] == 'c'): 
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += j*w*(lista_componentes[index + 3]))
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1j*w*(lista_componentes[index + 3])
 			
 		##X	
 		if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): 
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1/(j*w*(lista_componentes[index + 3]))
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1/(1j*w*(lista_componentes[index + 3]))
+			
+		##K
+		if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'):
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[0][0])/(1j*w)		
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] == 0):
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] == 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 2]) - 1]) += -(gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 2]) - 1]) += -(gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[1][1])/(1j*w)
+				
 			
 	
 	if (lista_componentes[index + 2] == 0): #corrente saindo do nó
@@ -221,13 +259,33 @@ def montar_yn(lista_componentes, yn, index, corrente,w):
 				(yn[yn.shape[0]-1][yn.shape[1]-2]) += (lista_componentes[index + 5])
 				
 		##C		
-		if (lista_componentes[index][0] == 'C' or lista_componentes[index][0] == 'c'): 
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += j*w*(lista_componentes[index + 3]))
-			
+		if (lista_componentes[index][0] == 'C' or lista_componentes[index][0] == 'c'):
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1j*w*(lista_componentes[index + 3])
+		
 		##X	
-		if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): 
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1/(j*w*(lista_componentes[index + 3]))
+		if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'):
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1/(1j*w*(lista_componentes[index + 3]))
 			
+		##K
+		if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'):
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[0][0])/(1j*w)
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] == 0):
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] == 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 1]) - 1]) += -(gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 1]) - 1]) += -(gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
 			
 				
 		
@@ -331,20 +389,49 @@ def montar_yn(lista_componentes, yn, index, corrente,w):
 				
 		##C		
 		if (lista_componentes[index][0] == 'C' or lista_componentes[index][0] == 'c'): 
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += j*w*(lista_componentes[index + 3])
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += j*w*(lista_componentes[index + 3])
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -j*w*(lista_componentes[index + 3])
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -j*w*(lista_componentes[index + 3])
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1j*w*(lista_componentes[index + 3])
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1j*w*(lista_componentes[index + 3])
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -1j*w*(lista_componentes[index + 3])
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -1j*w*(lista_componentes[index + 3])
 			
 		##X	
 		if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): 
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1/(j*w*(lista_componentes[index + 3]))
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1/(j*w*(lista_componentes[index + 3]))
-			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -1/(j*w*(lista_componentes[index + 3]))
-			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -1/(j*w*(lista_componentes[index + 3]))
-				
-		
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += 1/(1j*w*(lista_componentes[index + 3]))
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += 1/(1j*w*(lista_componentes[index + 3]))
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -1/(1j*w*(lista_componentes[index + 3]))
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -1/(1j*w*(lista_componentes[index + 3]))
 			
+		##K
+		if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'):
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[0][0])/(1j*w)
+			(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 2]) - 1]) += -(gama[0][0])/(1j*w)
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 1]) - 1]) += -(gama[0][0])/(1j*w)
+			(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[0][0])/(1j*w)		
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] == 0):
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 1]) - 1]) += -(gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] == 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 2]) - 1]) += -(gama[1][0])/(1j*w)
+			if (lista_componentes[index + 4] != 0 and lista_componentes[index + 5] != 0):
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 5]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 1]) - 1]) += -(gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 2]) - 1]) += (gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 1]) - 1][int(lista_componentes[index + 4]) - 1]) += (gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 2]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[0][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 1]) - 1]) += (gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 2]) - 1]) += -(gama[1][0])/(1j*w)
+				(yn[int(lista_componentes[index + 5]) - 1][int(lista_componentes[index + 4]) - 1]) += -(gama[1][1])/(1j*w)
+				(yn[int(lista_componentes[index + 4]) - 1][int(lista_componentes[index + 5]) - 1]) += -(gama[1][1])/(1j*w)							
 	return yn
 
 ##################################################################### Programa Principal #####################################################################
@@ -393,43 +480,58 @@ def menu():
 		
 		if (componente != '0'):
 			lista_componentes.append (componente_descricao[0])
-		
-			indice += 1
-			while ( (indice) <= (len(componente_descricao) - 1)):
-				componente_descricao_inteiro = float(componente_descricao[indice])
-				
-				if (indice == 1):
-					if (componente_descricao_inteiro > maior_valor_nó):
-						maior_valor_nó = int(componente_descricao_inteiro)
-				
-				if (indice == 2):
-					if (componente_descricao_inteiro > maior_valor_nó):
-						maior_valor_nó = int(componente_descricao_inteiro)
-							
-				
+			lista_componentes.append (float(componente_descricao[1]))
+			lista_componentes.append (float(componente_descricao[2]))
 			
-				lista_componentes.append (componente_descricao_inteiro)
-				indice += 1
+			if (int(componente_descricao[1]) > maior_valor_nó):
+				maior_valor_nó = int(componente_descricao[1])
+				
+			if (int(componente_descricao[2]) > maior_valor_nó):
+				maior_valor_nó = int(componente_descricao[2])
+			
+			
+			if (componente_descricao[3] == 'SIN' or componente_descricao[3] == 'sin' or componente_descricao[3] == 'DC' or componente_descricao[3] == 'dc'):
+				lista_componentes.append (componente_descricao[3])	
+				indice += 4
+			else:
+				indice += 3
+				
+			if (indice == 3):
+				while ( (indice) <= (len(componente_descricao)-1)):
+					componente_descricao_inteiro = float(componente_descricao[indice])				
+					lista_componentes.append (componente_descricao_inteiro)
+					indice += 1
+			
+			if (indice == 4):
+				while ( (indice) <= (len(componente_descricao)-1)):
+					componente_descricao_inteiro = float(componente_descricao[indice])
+					lista_componentes.append (componente_descricao_inteiro)
+					indice += 1
 			
 			indice = 0
 	
 	
+	yn = np.zeros((maior_valor_nó, maior_valor_nó),dtype=complex)
+	q = np.zeros((maior_valor_nó,1),dtype=complex)
+	gama = np.zeros((2, 2),dtype=complex)
+	matriz_L = np.zeros((2, 2),dtype=complex)
 	
-	yn = np.zeros((maior_valor_nó, maior_valor_nó))
-	q = np.zeros((maior_valor_nó,1))
 	
 	while ((index) < (len(lista_componentes))):
-		if (type(lista_componentes[index]) is float):
+		if (lista_componentes[index] == 'SIN' or lista_componentes[index] == 'sin'):
+			w = lista_componentes[index + 3] 			
 			index += 1
-		elif (lista_componentes[index] == "SIN" or lista_componentes[index] == "sin"):
-			w = lista_componentes[index + 1]   
+		else:
+			index += 1
+		
 	
+	index = 0
 	while ((index) < (len(lista_componentes))):
 		if (type(lista_componentes[index]) is float):
 			index += 1
 		else:
 			if (lista_componentes[index][0] == 'R' or lista_componentes[index][0] == 'r'): #resistência
-				yn = montar_yn(lista_componentes,yn, index,corrente,w)
+				yn = montar_yn(lista_componentes,yn, index,corrente,w,gama)
 				
 				
 			if (lista_componentes[index][0] == 'I' or lista_componentes[index][0] == 'i'): #fonte de corrente independente 		
@@ -438,98 +540,106 @@ def menu():
 				
 				
 			if (lista_componentes[index][0] == 'G' or lista_componentes[index][0] == 'g'): #fonte de corrente controlada por tensão 
-				yn = montar_yn(lista_componentes,yn, index,corrente,w)
+				yn = montar_yn(lista_componentes,yn, index,corrente,w,gama)
 				
 			
 			if (lista_componentes[index][0] == 'V' or lista_componentes[index][0] == 'v'): #fonte de tensão independente
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
-				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1),dtype=complex)
 				b[:-1,:-1] = yn
 				yn = b
 				#adiciona linha em q
 				dimensao_q = (q.shape)
-				b = np.zeros((dimensao_yn[0] + 1,1))
+				b = np.zeros((dimensao_yn[0] + 1,1),dtype=complex)
 				b[:-1,:] = q
 				q = b
-				yn = montar_yn(lista_componentes,yn, index,corrente,w)
+				yn = montar_yn(lista_componentes,yn, index,corrente,w,gama)
 				q = montar_q(lista_componentes,q, index)
 				dimensoes_extras += 1
 				
 			if (lista_componentes[index][0] == 'B' or lista_componentes[index][0] == 'b'): #fonte de corrente controlada por corrente
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
-				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1),dtype=complex)
 				b[:-1,:-1] = yn
 				yn = b
 				#adiciona linha em q
 				dimensao_q = (q.shape)
-				b = np.zeros((dimensao_yn[0] + 1,1))
+				b = np.zeros((dimensao_yn[0] + 1,1),dtype=complex)
 				b[:-1,:] = q
 				q = b
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 				dimensoes_extras += 1
 				
 				
 			if (lista_componentes[index][0] == 'A' or lista_componentes[index][0] == 'a'): #fonte de tensão controlada por tensão
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
-				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1),dtype=complex)
 				b[:-1,:-1] = yn
 				yn = b
 				#adiciona linha em q
 				dimensao_q = (q.shape)
-				b = np.zeros((dimensao_yn[0] + 1,1))
+				b = np.zeros((dimensao_yn[0] + 1,1),dtype=complex)
 				b[:-1,:] = q
 				q = b
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 				dimensoes_extras += 1
 				
 			if (lista_componentes[index][0] == 'H' or lista_componentes[index][0] == 'h'): #fonte de tensão controlada por corrente
 				##jx
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
-				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1),dtype=complex)
 				b[:-1,:-1] = yn
 				yn = b	
 				#adiciona linha em q
 				dimensao_q = (q.shape)
-				b = np.zeros((dimensao_yn[0] + 1,1))
+				b = np.zeros((dimensao_yn[0] + 1,1),dtype=complex)
 				b[:-1,:] = q
 				q = b
 				corrente = "jx"
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 				dimensoes_extras += 1
 				
 				##jy
 				#adiciona linha e coluna em yn
 				dimensao_yn = (yn.shape)
-				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1))
+				b = np.zeros((dimensao_yn[0] + 1,dimensao_yn[1] + 1),dtype=complex)
 				b[:-1,:-1] = yn
 				yn = b	
 				#adiciona linha em q
 				dimensao_q = (q.shape)
-				b = np.zeros((dimensao_yn[0] + 1,1))
+				b = np.zeros((dimensao_yn[0] + 1,1),dtype=complex)
 				b[:-1,:] = q
 				q = b
 				corrente = "jy"
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 				dimensoes_extras += 1
 				
 			if (lista_componentes[index][0] == 'C' or lista_componentes[index][0] == 'c'): #capacitor		
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 			
 			if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): #indutor		
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 			
-			if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'): #indutância mútua	
-				yn = montar_yn(lista_componentes,yn, index, corrente,w)
+			if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'): #indutância mútua
+				#criando matriz de indutâncias e autoindutâncias
+				
+				matriz_L[0][0] = (lista_componentes[index + 3])
+				matriz_L[0][1] = (lista_componentes[index + 7])
+				matriz_L[1][0] = (lista_componentes[index + 7])
+				matriz_L[1][1] = (lista_componentes[index + 6])
+				
+				gama = np.linalg.inv(matriz_L)
+				
+				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
 				
 				
 			index += 1
 			
-	#print(yn)	
-	#print(q)
+
 	# yn*m = q
 	# m = inv(yn)*q
 	m = montar_m (yn,q)
