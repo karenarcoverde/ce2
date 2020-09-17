@@ -522,7 +522,7 @@ def menu():
 			if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): #indutor		
 				yn = montar_yn(lista_componentes,yn, index, corrente,w)
 			
-			if (lista_componentes[index][0] == 'X' or lista_componentes[index][0] == 'x'): #indutor		
+			if (lista_componentes[index][0] == 'K' or lista_componentes[index][0] == 'k'): #indutância mútua	
 				yn = montar_yn(lista_componentes,yn, index, corrente,w)
 				
 				
