@@ -14,22 +14,67 @@ from scipy import linalg
 from numpy import *
 import cmath
 import math
-import numba 
+
 
 
 ##################################################################### Funcoes #####################################################################
 
-def resultado_final (m,maior_valor_nó,dimensoes_extras):
+def resultado_final (m,maior_valor_nó,dimensoes_extras,w):
 	indice = 0
+	t = 't'
+	cosseno = 'cos'
+	seno = 'sin'
 	
-	for indice in range (maior_valor_nó):
-		print("e"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
+	#se for regime permanente senoidal
+	if (w != 0):
+		for indice in range (maior_valor_nó):
+			real = '{:.2f}'.format(m[indice][0].real)
+			imaginaria = '{:.2f}'.format(-m[indice][0].imag)
 		
-	indice = 0
-	if (dimensoes_extras != 0):
-		indice += maior_valor_nó
-		for (indice) in range (indice,(dimensoes_extras + maior_valor_nó)):
-			print("j"+ str(indice + 1),'= {:.2f}'.format(m[indice][0]))
+			if (m[indice][0].real !=0 and m[indice][0].imag != 0):
+				print("e"+ str(indice + 1),' = ' + real + cosseno + str(int(w)) + str(t) + " " + imaginaria + seno + str(int(w)) + str(t))
+			elif (m[indice][0].real != 0 and m[indice][0].imag == 0):
+				print("e"+ str(indice + 1),' = ' + real + cosseno + str(int(w)) + str(t))
+			elif (m[indice][0].real == 0 and m[indice][0].imag!= 0):
+				print("e"+ str(indice + 1),' = ' + imaginaria + seno + str(int(w)) + str(t))
+			elif (m[indice][0].real == 0 and m[indice][0].imag == 0):
+					print("e"+ str(indice + 1),' = ' + '0')
+			
+		indice = 0
+		if (dimensoes_extras != 0):
+			indice += maior_valor_nó
+			for (indice) in range (indice,(dimensoes_extras + maior_valor_nó)):
+				real = '{:.2f}'.format(m[indice][0].real)
+				imaginaria = '{:.2f}'.format(-m[indice][0].imag)
+				if (m[indice][0].real !=0 and m[indice][0].imag != 0):
+					print("j"+ str(indice + 1),' = ' + real + cosseno + str(int(w)) + str(t) + " " + imaginaria + seno + str(int(w)) + str(t))
+				elif (m[indice][0].real != 0 and m[indice][0].imag == 0):
+					print("j"+ str(indice + 1),' = ' + real + cosseno + str(int(w)) + str(t))
+				elif (m[indice][0].real == 0 and m[indice][0].imag != 0):
+					print("j"+ str(indice + 1),' = ' + imaginaria + seno + str(int(w)) + str(t))	
+				elif (m[indice][0].real == 0 and m[indice][0].imag == 0):
+					print("j"+ str(indice + 1),' = ' + '0')
+					
+					
+	#se for DC		
+	if (w == 0):
+		for indice in range (maior_valor_nó):
+			real = '{:.2f}'.format(m[indice][0].real)
+			imaginaria = '{:.2f}'.format(-m[indice][0].imag)
+		
+			if (m[indice][0].real != 0 or m[indice][0].real == 0 and m[indice][0].imag == 0):
+				print("e"+ str(indice + 1),' = ' + real)
+			
+		indice = 0
+		if (dimensoes_extras != 0):
+			indice += maior_valor_nó
+			for (indice) in range (indice,(dimensoes_extras + maior_valor_nó)):
+				real = '{:.2f}'.format(m[indice][0].real)
+				imaginaria = '{:.2f}'.format(-m[indice][0].imag)
+				if (m[indice][0].real != 0 or m[indice][0].real == 0 and m[indice][0].imag == 0):
+					print("j"+ str(indice + 1),' = ' + real)
+				
+			
 		
 
 	
@@ -635,21 +680,13 @@ def menu():
 				gama = np.linalg.inv(matriz_L)
 				
 				yn = montar_yn(lista_componentes,yn, index, corrente,w,gama)
-				
-				
+							
 			index += 1
-			
 
 	# yn*m = q
 	# m = inv(yn)*q
 	m = montar_m (yn,q)
-			
-	#print(yn)	
-	#print(q)
-	
-	#print(m)
-	resultado_final(m,maior_valor_nó,dimensoes_extras)
+	resultado_final(m,maior_valor_nó,dimensoes_extras,w)
 				
-	
 ######## chamada ao menu
 menu()
