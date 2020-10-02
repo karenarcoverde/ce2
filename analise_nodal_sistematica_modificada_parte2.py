@@ -777,8 +777,7 @@ def menu():
 				dimensoes_extras += 1
 				
 			index += 1
-	
-	print(yn)
+			
 	# yn*m = q
 	# m = inv(yn)*q
 	m = montar_m (yn,q)
