@@ -778,8 +778,6 @@ def menu():
 				
 			index += 1
 	
-	print(yn)
-	print(q)
 	# yn*m = q
 	# m = inv(yn)*q
 	m = montar_m (yn,q)
