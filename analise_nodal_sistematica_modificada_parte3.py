@@ -617,9 +617,12 @@ def menu():
 		a21 = Derivative(e3/2 +2 -2*e2*e1 +e2,e1)
 		a22 = Derivative(e3/2 +2 -2*e2*e1 +e2,e2)
 		a23 = Derivative(e3/2 +2 -2*e2*e1 +e2,e3)
+		a31 = Derivative(e2-e3 -2,e1)
+		a32 = Derivative(e2-e3 -2,e2)
+		a33 = Derivative(e2-e3 -2,e3)
 		
 		
-		jacobiano_circuito2 = [[a11.doit(),a12.doit(),a13.doit()],[a21.doit(),a22.doit(),a23.doit()]]
+		jacobiano_circuito2 = [[a11.doit(),a12.doit(),a13.doit()],[a21.doit(),a22.doit(),a23.doit()],[a31.doit(),a32.doit(),a33.doit()]]
 		print("Circuito 2:")
 		print(jacobiano_circuito2)
 		print()
