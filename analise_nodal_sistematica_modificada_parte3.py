@@ -627,26 +627,20 @@ def menu():
 		Gm2 = Derivative(3*(e2n)**2,e2n).doit() #fonte de corrente
 		I2 = 3*(e2n)**2 -Gm2*(e2n) #fonte de corrente
 		
-		print(G1)
-		print(I1)
-		print(Gm2)
-		print(I2)
 		
 		
-		G1 = G1.subs(e1n,1)
-		G1 = G1.subs(e2n,1)
-		I1 = I1.subs(e1n,1)
-		I1 = I1.subs(e2n,1)
-		Gm2 = Gm2.subs(e1n,1)
-		Gm2 = Gm2.subs(e2n,1)
-		I2 = I2.subs(e1n,1)
-		I2 = I2.subs(e2n,1)
+		
+		G1 = G1.subs(e1n,0.1)
+		G1 = G1.subs(e2n,0.05)
+		I1 = I1.subs(e1n,0.1)
+		I1 = I1.subs(e2n,0.05)
+		Gm2 = Gm2.subs(e1n,0.1)
+		Gm2 = Gm2.subs(e2n,0.05)
+		I2 = I2.subs(e1n,0.1)
+		I2 = I2.subs(e2n,0.05)
 		
 		
-		print(G1)
-		print(I1)
-		print(Gm2)
-		print(I2)
+	
 		
 		#construindo a matriz
 		I[0,0] = I1 - I2 +1
@@ -661,17 +655,63 @@ def menu():
 		e_n_mais_um = np.dot(inv_yn, I)
 		
 		p = 0
+	
+		e1n = e1n.subs(e1n,0.1)
+		e2n = e2n.subs(e2n,0.05)
+		
 		
 		while (p < 100):
-			if (e_n_mais_um [0,0] == en1 and e_n_mais_um[1,0] == en2):
-				print (e_n_mais_um[0,0])
-				print (e_n_mais_um[1,0])
+
+			
+			if (e_n_mais_um [0,0] == e1n and e_n_mais_um[1,0] == e2n):
+				print ("e1 = ", e_n_mais_um[0,0])
+				print ("e2 = ", e_n_mais_um[1,0])
+				break
+				
+				
 			
 			else:
-				en1 = e_n_mais_um[0,0]
-				en2 = e_n_mais_um[1,0]
+				e1n = sp.symbols("e1n",real=True)
+				e2n = sp.symbols("e2n",real=True)
+				##resistencia
+				G1 = Derivative(2*(e1n-e2n)**2,e1n).doit()
+		
+				nova_resistencia = 1/G1 #resistencia
+				I1 = 2*(e1n-e2n)**2 -G1*(e1n-e2n) #fonte de corrente
+		
+				##fonte de corrente controlada por tensao
+				Gm2 = Derivative(3*(e2n)**2,e2n).doit() #fonte de corrente
+				I2 = 3*(e2n)**2 -Gm2*(e2n) #fonte de corrente
+				
+				G1 = G1.subs(e1n, e_n_mais_um[0,0])
+				G1 = G1.subs(e2n, e_n_mais_um[1,0])
+				I1 = I1.subs(e1n, e_n_mais_um[0,0])
+				I1 = I1.subs(e2n, e_n_mais_um[1,0])
+				Gm2 = Gm2.subs(e1n, e_n_mais_um[0,0])
+				Gm2 = Gm2.subs(e2n, e_n_mais_um[1,0])
+				I2 = I2.subs(e1n, e_n_mais_um[0,0])
+				I2 = I2.subs(e2n, e_n_mais_um[1,0])
+				
+				
+				I[0,0] = I1 - I2 +1
+				I[1,0] = -I1 +I2
+				yn[0,0] = G1
+				yn[1,1] = 1 +G1 -Gm2
+				yn[0,1] = -G1 +Gm2
+				yn[1,0] = -G1 
+				
+				e1n = e1n.subs(e1n, e_n_mais_um[0,0])
+				e2n = e2n.subs(e2n, e_n_mais_um[1,0])
+				
+				
+				
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
+				
+				if (p == 99):
+					print ("e1 = ", e_n_mais_um[0,0])
+					print ("e2 = ", e_n_mais_um[1,0])
+			
 			
 			p+=1
 		
