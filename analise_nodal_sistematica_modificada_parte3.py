@@ -607,6 +607,77 @@ def menu():
 		print(jacobiano_circuito1)
 		print()
 		
+		
+		e1n = sp.symbols("e1n",real=True)
+		e2n = sp.symbols("e2n",real=True)
+		
+		yn = np.zeros((2,2))
+		I = np.zeros((2,1))
+		
+	
+		
+		
+		##resistencia
+		G1 = Derivative(2*(e1n-e2n)**2,e1n).doit()
+		
+		nova_resistencia = 1/G1 #resistencia
+		I1 = 2*(e1n-e2n)**2 -G1*(e1n-e2n) #fonte de corrente
+		
+		##fonte de corrente controlada por tensao
+		Gm2 = Derivative(3*(e2n)**2,e2n).doit() #fonte de corrente
+		I2 = 3*(e2n)**2 -Gm2*(e2n) #fonte de corrente
+		
+		print(G1)
+		print(I1)
+		print(Gm2)
+		print(I2)
+		
+		
+		G1 = G1.subs(e1n,1)
+		G1 = G1.subs(e2n,1)
+		I1 = I1.subs(e1n,1)
+		I1 = I1.subs(e2n,1)
+		Gm2 = Gm2.subs(e1n,1)
+		Gm2 = Gm2.subs(e2n,1)
+		I2 = I2.subs(e1n,1)
+		I2 = I2.subs(e2n,1)
+		
+		
+		print(G1)
+		print(I1)
+		print(Gm2)
+		print(I2)
+		
+		#construindo a matriz
+		I[0,0] = I1 - I2 +1
+		I[1,0] = -I1 +I2
+		yn[0,0] = G1
+		yn[1,1] = 1 +G1 -Gm2
+		yn[0,1] = -G1 +Gm2
+		yn[1,0] = -G1 
+		
+		
+		inv_yn = np.linalg.inv(yn)
+		e_n_mais_um = np.dot(inv_yn, I)
+		
+		p = 0
+		
+		while (p < 100):
+			if (e_n_mais_um [0,0] == en1 and e_n_mais_um[1,0] == en2):
+				print (e_n_mais_um[0,0])
+				print (e_n_mais_um[1,0])
+			
+			else:
+				en1 = e_n_mais_um[0,0]
+				en2 = e_n_mais_um[1,0]
+				inv_yn = np.linalg.inv(yn)
+				e_n_mais_um = np.dot(inv_yn, I)
+			
+			p+=1
+		
+		print()
+		
+		
 		e1 = sp.symbols("e1",real=True)
 		e2 = sp.symbols("e2",real=True)
 		e3 = sp.symbols("e3",real=True)
