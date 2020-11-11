@@ -665,7 +665,7 @@ def menu():
 		while (p < 100):
 
 			
-			if (e_n_mais_um [0,0] == e1n and e_n_mais_um[1,0] == e2n):
+			if (float(e_n_mais_um [0,0]) == float(e1n) and float(e_n_mais_um[1,0]) == float(e2n)):
 				print ("e1 = ", e_n_mais_um[0,0])
 				print ("e2 = ", e_n_mais_um[1,0])
 				break
@@ -805,7 +805,7 @@ def menu():
 		while (p < 50):
 
 			
-			if (e_n_mais_um [0,0] == e1n and e_n_mais_um[1,0] == e2n):
+			if (float(e_n_mais_um [0,0]) == float(e1n) and float(e_n_mais_um[1,0]) == float(e2n)):
 				print ("e1 = ", e_n_mais_um[0,0])
 				print ("e2 = ", e_n_mais_um[1,0])
 				print ("e3 = ", e_n_mais_um[2,0])
@@ -910,14 +910,14 @@ def menu():
 		##fonte de corrente controlada por duas correntes
 		B0 = Derivative((2*Ixn)/Iyn,Ixn).doit() #fonte de corrente controlada
 		B1 = Derivative((2*Ixn)/Iyn,Iyn).doit() #fonte de corrente controlada
-		I0 = (2*Ixn)/Iyn -B0*Ixn -B1*Iyn #fonte de corrente 
+		I0 = ((2*Ixn)/Iyn) -B0*Ixn -B1*Iyn #fonte de corrente 
 		
-		
+				
 		I0 = I0.subs(Ixn,0.1)
 		I0 = I0.subs(Iyn,0.05)
 		B0 = B0.subs(Ixn,0.1)
 		B0 = B0.subs(Iyn,0.05)
-		B1 = B1.subs(Ixn,0.05)
+		B1 = B1.subs(Ixn,0.1)
 		B1 = B1.subs(Iyn,0.05)
 		
 		
@@ -982,13 +982,21 @@ def menu():
 	
 		
 		while (p < 100):
-
+		
+			e_n_mais_um[4,0] = round(float(e_n_mais_um [4,0]),9)
+			e_n_mais_um[5,0] = round(float(e_n_mais_um [5,0]),9)
+			Ixn = round(float(Ixn),9)
+			Iyn = round(float(Iyn),9)
+			
+		
 			
 			if (e_n_mais_um [4,0] == Ixn and e_n_mais_um[5,0] == Iyn):
-				print ("e1 = ", e_n_mais_um[0,0])
-				print ("e2 = ", e_n_mais_um[1,0])
-				print ("e3 = ", e_n_mais_um[2,0])
-				print ("e4 = ", e_n_mais_um[3,0])
+			
+				print ("e1 = ", round(e_n_mais_um[0,0],3))
+				print ("e2 = ", round(e_n_mais_um[1,0],3))
+				print ("e3 = ", round(e_n_mais_um[2,0],3))
+				print ("e4 = ", round(e_n_mais_um[3,0],3))
+				
 				break
 				
 				
@@ -999,7 +1007,8 @@ def menu():
 				##fonte de corrente controlada por duas correntes
 				B0 = Derivative((2*Ixn)/Iyn,Ixn).doit() #fonte de corrente controlada
 				B1 = Derivative((2*Ixn)/Iyn,Iyn).doit() #fonte de corrente controlada
-				I0 = (2*Ixn)/Iyn -B0*Ixn -B1*Iyn #fonte de corrente 
+				I0 = ((2*Ixn)/Iyn) -B0*Ixn -B1*Iyn #fonte de corrente 
+					
 				
 				
 				I0 = I0.subs(Ixn,e_n_mais_um[4,0])
@@ -1008,8 +1017,8 @@ def menu():
 				B0 = B0.subs(Iyn,e_n_mais_um[5,0])
 				B1 = B1.subs(Ixn,e_n_mais_um[4,0])
 				B1 = B1.subs(Iyn,e_n_mais_um[5,0])
-				
-				
+					
+					
 				#construindo a matriz
 				I[0,0] = -I0
 				I[1,0] = 0
@@ -1053,37 +1062,32 @@ def menu():
 				yn[5,3] = 1
 				yn[5,4] = 0
 				yn[5,5] = 0
-				
+					
 				Ixn = Ixn.subs(Ixn, e_n_mais_um[4,0])
 				Iyn = Iyn.subs(Iyn, e_n_mais_um[5,0])
-				
-				
-				
+					
+					
+					
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
-				
-				
-				
-				
+					
+					
 				if(math.isnan(e_n_mais_um[0,0])):
 					print("Solução divergente!")
 					break
-				
+					
 				else:
-				
+					
 					if (p == 99):
 						print ("e1 = ", e_n_mais_um[0,0])
 						print ("e2 = ", e_n_mais_um[1,0])
 						print ("e3 = ", e_n_mais_um[2,0])
-						print ("e4 = ", e_n_mais_um[3,0])
+						print ("e4 = ", e_n_mais_um[3,0])		
+				
+				p+=1
 			
 			
 			
-			p+=1
-		
-		print()
-		
-		
 		
 		
 		
