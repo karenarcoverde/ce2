@@ -817,9 +817,9 @@ def menu():
 				e1n = sp.symbols("e1n",real=True)
 				e2n = sp.symbols("e2n",real=True)
 				##fonte de corrente controlada por duas tensoes
-				Gm1 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
-				Gm2 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
-				I1 = 2*e2n*e1n -Gm1*e2n -Gm2*e1n #fonte de corrente 
+				Gm1 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
+				Gm2 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
+				I1 = 2*e2n*e1n -Gm1*e1n -Gm2*e2n #fonte de corrente 
 				
 				I1 = I1.subs(e1n,e_n_mais_um[0,0])
 				I1 = I1.subs(e2n,e_n_mais_um[1,0])
@@ -852,8 +852,6 @@ def menu():
 				
 				e1n = e1n.subs(e1n, e_n_mais_um[0,0])
 				e2n = e2n.subs(e2n, e_n_mais_um[1,0])
-				
-				
 				
 				
 				
