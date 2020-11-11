@@ -899,8 +899,189 @@ def menu():
 		print("Circuito 3:")
 		print(jacobiano_circuito3)
 		
+		print()
+		
+		Ixn = sp.symbols("Ixn",real=True)
+		Iyn = sp.symbols("Iyn",real=True)
+		
+		yn = np.zeros((6,6))
+		I = np.zeros((6,1))
+		
+		##fonte de corrente controlada por duas correntes
+		B0 = Derivative((2*Ixn)/Iyn,Ixn).doit() #fonte de corrente controlada
+		B1 = Derivative((2*Ixn)/Iyn,Iyn).doit() #fonte de corrente controlada
+		I0 = (2*Ixn)/Iyn -B0*Ixn -B1*Iyn #fonte de corrente 
 		
 		
+		I0 = I0.subs(Ixn,0.1)
+		I0 = I0.subs(Iyn,0.05)
+		B0 = B0.subs(Ixn,0.1)
+		B0 = B0.subs(Iyn,0.05)
+		B1 = B1.subs(Ixn,0.05)
+		B1 = B1.subs(Iyn,0.05)
+		
+		
+		
+		#construindo a matriz
+		I[0,0] = -I0
+		I[1,0] = 0
+		I[2,0] = 10
+		I[3,0] = I0
+		I[4,0] = 0
+		I[5,0] = 0
+		yn[0,0] = 1/2
+		yn[0,1] = 0
+		yn[0,2] = 0
+		yn[0,3] = 0
+		yn[0,4] = B0 +1
+		yn[0,5] = B1
+		yn[1,0] = 0
+		yn[1,1] = 2
+		yn[1,2] = -1
+		yn[1,3] = 0
+		yn[1,4] = -1
+		yn[1,5] = 0
+		yn[2,0] = 0
+		yn[2,1] = -1
+		yn[2,2] = 1
+		yn[2,3] = 0
+		yn[2,4] = 0
+		yn[2,5] = 1
+		yn[3,0] = 0
+		yn[3,1] = 0
+		yn[3,2] = 0
+		yn[3,3] = 1/2
+		yn[3,4] = -B0
+		yn[3,5] = -B1-1
+		yn[4,0] = -1
+		yn[4,1] = 1
+		yn[4,2] = 0
+		yn[4,3] = 0
+		yn[4,4] = 0
+		yn[4,5] = 0
+		yn[5,0] = 0
+		yn[5,1] = 0
+		yn[5,2] = -1
+		yn[5,3] = 1
+		yn[5,4] = 0
+		yn[5,5] = 0
+		
+		
+	
+		
+		inv_yn = np.linalg.inv(yn)
+		e_n_mais_um = np.dot(inv_yn, I)
+		
+		
+		
+		p = 0
+	
+		Ixn = Ixn.subs(Ixn,0.1)
+		Iyn = Iyn.subs(Iyn,0.05)
+		
+	
+		
+		while (p < 100):
+
+			
+			if (e_n_mais_um [4,0] == Ixn and e_n_mais_um[5,0] == Iyn):
+				print ("e1 = ", e_n_mais_um[0,0])
+				print ("e2 = ", e_n_mais_um[1,0])
+				print ("e3 = ", e_n_mais_um[2,0])
+				print ("e4 = ", e_n_mais_um[3,0])
+				break
+				
+				
+			
+			else:
+				Ixn = sp.symbols("Ixn",real=True)
+				Iyn = sp.symbols("Iyn",real=True)
+				##fonte de corrente controlada por duas correntes
+				B0 = Derivative((2*Ixn)/Iyn,Ixn).doit() #fonte de corrente controlada
+				B1 = Derivative((2*Ixn)/Iyn,Iyn).doit() #fonte de corrente controlada
+				I0 = (2*Ixn)/Iyn -B0*Ixn -B1*Iyn #fonte de corrente 
+				
+				
+				I0 = I0.subs(Ixn,e_n_mais_um[4,0])
+				I0 = I0.subs(Iyn,e_n_mais_um[5,0])
+				B0 = B0.subs(Ixn,e_n_mais_um[4,0])
+				B0 = B0.subs(Iyn,e_n_mais_um[5,0])
+				B1 = B1.subs(Ixn,e_n_mais_um[4,0])
+				B1 = B1.subs(Iyn,e_n_mais_um[5,0])
+				
+				
+				#construindo a matriz
+				I[0,0] = -I0
+				I[1,0] = 0
+				I[2,0] = 10
+				I[3,0] = I0
+				I[4,0] = 0
+				I[5,0] = 0
+				yn[0,0] = 1/2
+				yn[0,1] = 0
+				yn[0,2] = 0
+				yn[0,3] = 0
+				yn[0,4] = B0 +1
+				yn[0,5] = B1
+				yn[1,0] = 0
+				yn[1,1] = 2
+				yn[1,2] = -1
+				yn[1,3] = 0
+				yn[1,4] = -1
+				yn[1,5] = 0
+				yn[2,0] = 0
+				yn[2,1] = -1
+				yn[2,2] = 1
+				yn[2,3] = 0
+				yn[2,4] = 0
+				yn[2,5] = 1
+				yn[3,0] = 0
+				yn[3,1] = 0
+				yn[3,2] = 0
+				yn[3,3] = 1/2
+				yn[3,4] = -B0
+				yn[3,5] = -B1-1
+				yn[4,0] = -1
+				yn[4,1] = 1
+				yn[4,2] = 0
+				yn[4,3] = 0
+				yn[4,4] = 0
+				yn[4,5] = 0
+				yn[5,0] = 0
+				yn[5,1] = 0
+				yn[5,2] = -1
+				yn[5,3] = 1
+				yn[5,4] = 0
+				yn[5,5] = 0
+				
+				Ixn = Ixn.subs(Ixn, e_n_mais_um[4,0])
+				Iyn = Iyn.subs(Iyn, e_n_mais_um[5,0])
+				
+				
+				
+				inv_yn = np.linalg.inv(yn)
+				e_n_mais_um = np.dot(inv_yn, I)
+				
+				
+				
+				
+				if(math.isnan(e_n_mais_um[0,0])):
+					print("Solução divergente!")
+					break
+				
+				else:
+				
+					if (p == 99):
+						print ("e1 = ", e_n_mais_um[0,0])
+						print ("e2 = ", e_n_mais_um[1,0])
+						print ("e3 = ", e_n_mais_um[2,0])
+						print ("e4 = ", e_n_mais_um[3,0])
+			
+			
+			
+			p+=1
+		
+		print()
 		
 		
 		
