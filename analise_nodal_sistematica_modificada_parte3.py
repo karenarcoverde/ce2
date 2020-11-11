@@ -595,6 +595,8 @@ def menu():
 	
 	opcao_linear = input()
 	if (opcao_linear == "nao linear"):
+	
+		########### circuito 1
 		e1 = sp.symbols("e1",real=True)
 		e2 = sp.symbols("e2",real=True)
 		a11 = Derivative(-1 +2*(e1-e2)**2 +3*(e2)**2,e1)
@@ -708,6 +710,10 @@ def menu():
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
 				
+				if (p == 98):
+					print ("e1 = ", e_n_mais_um[0,0])
+					print ("e2 = ", e_n_mais_um[1,0])
+				
 				if (p == 99):
 					print ("e1 = ", e_n_mais_um[0,0])
 					print ("e2 = ", e_n_mais_um[1,0])
@@ -717,7 +723,7 @@ def menu():
 		
 		print()
 		
-		
+		########### circuito 2
 		e1 = sp.symbols("e1",real=True)
 		e2 = sp.symbols("e2",real=True)
 		e3 = sp.symbols("e3",real=True)
@@ -738,6 +744,150 @@ def menu():
 		print(jacobiano_circuito2)
 		print()
 		
+		
+	
+		e1n = sp.symbols("e1n",real=True)
+		e2n = sp.symbols("e2n",real=True)
+		
+		yn = np.zeros((4,4))
+		I = np.zeros((4,1))
+		
+		##fonte de corrente controlada por duas tensoes
+		Gm1 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
+		Gm2 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
+		I1 = 2*e2n*e1n -Gm1*e2n -Gm2*e1n #fonte de corrente 
+		
+		I1 = I1.subs(e1n,0)
+		I1 = I1.subs(e2n,0)
+		Gm1 = Gm1.subs(e1n,0)
+		Gm1 = Gm1.subs(e2n,0)
+		Gm2 = Gm2.subs(e1n,0)
+		Gm2 = Gm2.subs(e2n,0)
+		
+		
+		
+		#construindo a matriz
+		I[0,0] = -I1 +2
+		I[1,0] = -2
+		I[2,0] = I1
+		I[3,0] = -2
+		yn[0,0] = 1 +Gm1
+		yn[0,1] = Gm2
+		yn[0,2] = 0
+		yn[0,3] = 0
+		yn[1,0] = 0
+		yn[1,1] = 1
+		yn[1,2] = 0
+		yn[1,3] = 1
+		yn[2,0] = -Gm1
+		yn[2,1] = -Gm2
+		yn[2,2] = 1/2
+		yn[2,3] = -1
+		yn[3,0] = 0
+		yn[3,1] = -1
+		yn[3,2] = 1
+		yn[3,3] = 0
+		
+	
+		
+		inv_yn = np.linalg.inv(yn)
+		e_n_mais_um = np.dot(inv_yn, I)
+		
+		
+		
+		p = 0
+	
+		e1n = e1n.subs(e1n,0)
+		e2n = e2n.subs(e2n,0)
+		
+	
+		
+		while (p < 50):
+
+			
+			if (e_n_mais_um [0,0] == e1n and e_n_mais_um[1,0] == e2n):
+				print ("e1 = ", e_n_mais_um[0,0])
+				print ("e2 = ", e_n_mais_um[1,0])
+				print ("e3 = ", e_n_mais_um[2,0])
+				break
+				
+				
+			
+			else:
+				e1n = sp.symbols("e1n",real=True)
+				e2n = sp.symbols("e2n",real=True)
+				##fonte de corrente controlada por duas tensoes
+				Gm1 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
+				Gm2 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
+				I1 = 2*e2n*e1n -Gm1*e2n -Gm2*e1n #fonte de corrente 
+				
+				I1 = I1.subs(e1n,e_n_mais_um[0,0])
+				I1 = I1.subs(e2n,e_n_mais_um[1,0])
+				Gm1 = Gm1.subs(e1n,e_n_mais_um[0,0])
+				Gm1 = Gm1.subs(e2n,e_n_mais_um[1,0])
+				Gm2 = Gm2.subs(e1n,e_n_mais_um[0,0])
+				Gm2 = Gm2.subs(e2n,e_n_mais_um[1,0])
+				
+				#construindo a matriz
+				I[0,0] = -I1 +2
+				I[1,0] = -2
+				I[2,0] = I1
+				I[3,0] = -2
+				yn[0,0] = 1
+				yn[0,1] = 0
+				yn[0,2] = 0
+				yn[0,3] = 0
+				yn[1,0] = Gm1
+				yn[1,1] = 1 +Gm2
+				yn[1,2] = 0
+				yn[1,3] = 1
+				yn[2,0] = -Gm1
+				yn[2,1] = -Gm2
+				yn[2,2] = 1/2
+				yn[2,3] = -1
+				yn[3,0] = 0
+				yn[3,1] = -1
+				yn[3,2] = 1
+				yn[3,3] = 0 
+				
+				e1n = e1n.subs(e1n, e_n_mais_um[0,0])
+				e2n = e2n.subs(e2n, e_n_mais_um[1,0])
+				
+				
+				
+				
+				
+				inv_yn = np.linalg.inv(yn)
+				e_n_mais_um = np.dot(inv_yn, I)
+				
+				
+				
+				
+				if(math.isnan(e_n_mais_um[0,0])):
+					print("Solução divergente!")
+					break
+				
+				else:
+					if (p == 48):
+						print ("e1 = ", e_n_mais_um[0,0])
+						print ("e2 = ", e_n_mais_um[1,0])
+						print ("e3 = ", e_n_mais_um[2,0])
+				
+					if (p == 49):
+						print ("e1 = ", e_n_mais_um[0,0])
+						print ("e2 = ", e_n_mais_um[1,0])
+						print ("e3 = ", e_n_mais_um[2,0])
+			
+			
+			
+			p+=1
+		
+		print()
+		
+		
+		########### circuito 3
+		
+		
 		e2 = sp.symbols("e2",real=True)
 		e3 = sp.symbols("e3",real=True)
 		
@@ -750,6 +900,13 @@ def menu():
 		jacobiano_circuito3 = [[a11.doit(),a12.doit()],[a21.doit(),a22.doit()]]
 		print("Circuito 3:")
 		print(jacobiano_circuito3)
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	
