@@ -597,12 +597,12 @@ def menu():
 	if (opcao_linear == "nao linear"):
 	
 		########### circuito 1
-		e1 = sp.symbols("e1",real=True)
-		e2 = sp.symbols("e2",real=True)
-		a11 = Derivative(-1 +2*(e1-e2)**2 +3*(e2)**2,e1)
-		a12 = Derivative(-1 +2*(e1-e2)**2 +3*(e2)**2,e2)
-		a21 = Derivative(e2 -2*(e1-e2)**2 -3*(e2)**2,e1)
-		a22 = Derivative(e2 -2*(e1-e2)**2 -3*(e2)**2,e2)
+		e1n = sp.symbols("e1n",real=True)
+		e2n = sp.symbols("e2n",real=True)
+		a11 = Derivative(-1 +2*(e1n-e2n)**2 +3*(e2n)**2,e1n)
+		a12 = Derivative(-1 +2*(e1n-e2n)**2 +3*(e2n)**2,e2n)
+		a21 = Derivative(e2n -2*(e1n-e2n)**2 -3*(e2n)**2,e1n)
+		a22 = Derivative(e2n -2*(e1n-e2n)**2 -3*(e2n)**2,e2n)
 		
 		jacobiano_circuito1 = [[a11.doit(),a12.doit()],[a21.doit(),a22.doit()]]
 		print("Circuito 1:")
@@ -724,19 +724,19 @@ def menu():
 		print()
 		
 		########### circuito 2
-		e1 = sp.symbols("e1",real=True)
-		e2 = sp.symbols("e2",real=True)
-		e3 = sp.symbols("e3",real=True)
+		e1n = sp.symbols("e1n",real=True)
+		e2n = sp.symbols("e2n",real=True)
+		e3n = sp.symbols("e3n",real=True)
 		
-		a11 = Derivative(2*e2*e1 +e1 -2,e1)
-		a12 = Derivative(2*e2*e1 +e1 -2,e2)
-		a13 = Derivative(2*e2*e1 +e1 -2,e3)
-		a21 = Derivative(e3/2 +2 -2*e2*e1 +e2,e1)
-		a22 = Derivative(e3/2 +2 -2*e2*e1 +e2,e2)
-		a23 = Derivative(e3/2 +2 -2*e2*e1 +e2,e3)
-		a31 = Derivative(e2-e3 -2,e1)
-		a32 = Derivative(e2-e3 -2,e2)
-		a33 = Derivative(e2-e3 -2,e3)
+		a11 = Derivative(2*e2n*e1n +e1n -2,e1n)
+		a12 = Derivative(2*e2n*e1n +e1n -2,e2n)
+		a13 = Derivative(2*e2n*e1n +e1n -2,e3n)
+		a21 = Derivative(e3n/2 +2 -2*e2n*e1n +e2n,e1n)
+		a22 = Derivative(e3n/2 +2 -2*e2n*e1n +e2n,e2n)
+		a23 = Derivative(e3n/2 +2 -2*e2n*e1n +e2n,e3n)
+		a31 = Derivative(e2n-e3n -2,e1n)
+		a32 = Derivative(e2n-e3n -2,e2n)
+		a33 = Derivative(e2n-e3n -2,e3n)
 		
 		
 		jacobiano_circuito2 = [[a11.doit(),a12.doit(),a13.doit()],[a21.doit(),a22.doit(),a23.doit()],[a31.doit(),a32.doit(),a33.doit()]]
@@ -886,13 +886,13 @@ def menu():
 		########### circuito 3
 		
 		
-		e2 = sp.symbols("e2",real=True)
-		e3 = sp.symbols("e3",real=True)
+		e2n = sp.symbols("e2n",real=True)
+		e3n = sp.symbols("e3n",real=True)
 		
-		a11 = Derivative(5*e2**2 -7*e2*e3 +58*e2 +2*e3**2 -24*e3,e2)
-		a12 = Derivative(5*e2**2 -7*e2*e3 +58*e2 +2*e3**2 -24*e3,e3)
-		a21 = Derivative(-2*e2**2 +5*e2*e3 -48*e2 -3*e3**2 +54*e3 -200,e2)
-		a22 = Derivative(-2*e2**2 +5*e2*e3 -48*e2 -3*e3**2 +54*e3 -200,e3)
+		a11 = Derivative(5*e2n**2 -7*e2n*e3n +58*e2n +2*e3n**2 -24*e3n,e2n)
+		a12 = Derivative(5*e2n**2 -7*e2n*e3n +58*e2n +2*e3n**2 -24*e3n,e3n)
+		a21 = Derivative(-2*e2n**2 +5*e2n*e3n -48*e2n -3*e3n**2 +54*e3n -200,e2n)
+		a22 = Derivative(-2*e2n**2 +5*e2n*e3n -48*e2n -3*e3n**2 +54*e3n -200,e3n)
 		
 		
 		jacobiano_circuito3 = [[a11.doit(),a12.doit()],[a21.doit(),a22.doit()]]
