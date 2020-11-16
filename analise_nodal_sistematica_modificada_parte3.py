@@ -923,6 +923,7 @@ def menu():
 		
 		print()
 		
+		## chute [-5,-0.3]
 		Ixn = sp.symbols("Ixn",real=True)
 		Iyn = sp.symbols("Iyn",real=True)
 		
@@ -1110,7 +1111,7 @@ def menu():
 				
 				p+=1
 			
-			
+		### chute [0.1,0.05]
 		Ixn = sp.symbols("Ixn",real=True)
 		Iyn = sp.symbols("Iyn",real=True)
 		
