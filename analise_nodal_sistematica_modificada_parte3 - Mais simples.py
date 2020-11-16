@@ -609,84 +609,8 @@ def menu():
 		print(jacobiano_circuito1)
 		print()
 		
-		## chute e = [0.7825181347822361, 0.5706399386619575]
-		e = [0.7825181347822361, 0.5706399386619575]
-		yn = np.zeros((2,2))
-		I = np.zeros((2,1))
-		
-		##resistencia
-		G1 = 4*e[0] - 4*e[1]
-		
-		nova_resistencia = 1/G1 #resistencia
-		I1 = 2*(e[0] - e[1])**2 - (e[0] - e[1])*(4*e[0] - 4*e[1])#fonte de corrente
-		
-		##fonte de corrente controlada por tensao
-		Gm2 = 6*e[1] #fonte de corrente
-		I2 = -3*e[1]**2 #fonte de corrente
-			
-		#construindo a matriz
-		I[0,0] = I1 - I2 +1
-		I[1,0] = -I1 +I2
-		yn[0,0] = G1
-		yn[1,1] = 1 +G1 -Gm2
-		yn[0,1] = -G1 +Gm2
-		yn[1,0] = -G1 
-		
-		inv_yn = np.linalg.inv(yn)
-		e_n_mais_um = np.dot(inv_yn, I)
-		
-		p = 0
-	
-		
-		while (p < 100):
-
-			e_n_mais_um[0,0] = round(float(e_n_mais_um [0,0]),9)
-			e_n_mais_um[1,0] = round(float(e_n_mais_um [1,0]),9)
-			e[0] = round(float(e[0]),9)
-			e[1] = round(float(e[1]),9)
-			
-		
-			
-			if (e_n_mais_um [0,0] == e[0] and e_n_mais_um[1,0] == e[1]):
-			
-				print ("e1 = ", round(e_n_mais_um[0,0],3))
-				print ("e2 = ", round(e_n_mais_um[1,0],3))
-				
-				break
-				
-				
-			
-			else:
-				e = [e_n_mais_um[0,0],e_n_mais_um[1,0]]
-				##resistencia
-				G1 = 4*e[0] - 4*e[1]
-		
-				nova_resistencia = 1/G1 #resistencia
-				I1 = 2*(e[0] - e[1])**2 - (e[0] - e[1])*(4*e[0] - 4*e[1])#fonte de corrente
-		
-				##fonte de corrente controlada por tensao
-				Gm2 = 6*e[1] #fonte de corrente
-				I2 = -3*e[1]**2 #fonte de corrente						
-				
-				I[0,0] = I1 - I2 +1
-				I[1,0] = -I1 +I2
-				yn[0,0] = G1
-				yn[1,1] = 1 +G1 -Gm2
-				yn[0,1] = -G1 +Gm2
-				yn[1,0] = -G1 
-				
-				inv_yn = np.linalg.inv(yn)
-				e_n_mais_um = np.dot(inv_yn, I)
-			
-				if (p == 99):
-					print ("e1 = ", e_n_mais_um[0,0])
-					print ("e2 = ", e_n_mais_um[1,0])		
-			p+=1
-		
-		print()
-		
-		## chute e = [0.2103078618357751, 0.28153561409471606]
-		e = [0.2103078618357751, 0.28153561409471606]
+		## chute e = [2, 5]
+		e = [2, 5]
 		yn = np.zeros((2,2))
 		I = np.zeros((2,1))
 		
@@ -754,12 +678,18 @@ def menu():
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
 				
+				if (p == 98):
+					print ("e1 = ", e_n_mais_um[0,0])
+					print ("e2 = ", e_n_mais_um[1,0])
+			
 				if (p == 99):
 					print ("e1 = ", e_n_mais_um[0,0])
 					print ("e2 = ", e_n_mais_um[1,0])		
 			p+=1
 		
 		print()
+		
+		
 		
 		########### circuito 2
 		e1n = sp.symbols("e1n",real=True)
