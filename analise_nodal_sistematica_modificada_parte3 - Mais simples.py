@@ -609,11 +609,10 @@ def menu():
 		print(jacobiano_circuito1)
 		print()
 		
+		
+		e = [2,5]
 		yn = np.zeros((2,2))
 		I = np.zeros((2,1))
-		
-		e = [2,1]
-		
 		
 		##resistencia
 		G1 = 4*e[0] - 4*e[1]
@@ -641,10 +640,18 @@ def menu():
 		
 		while (p < 100):
 
+			e_n_mais_um[0,0] = round(float(e_n_mais_um [0,0]),9)
+			e_n_mais_um[1,0] = round(float(e_n_mais_um [1,0]),9)
+			e[0] = round(float(e[0]),9)
+			e[1] = round(float(e[1]),9)
 			
-			if (float(e_n_mais_um [0,0]) == float(e[0]) and float(e_n_mais_um[1,0]) == float(e[1])):
-				print ("e1 = ", e_n_mais_um[0,0])
-				print ("e2 = ", e_n_mais_um[1,0])
+		
+			
+			if (e_n_mais_um [0,0] == e[0] and e_n_mais_um[1,0] == e[1]):
+			
+				print ("e1 = ", round(e_n_mais_um[0,0],3))
+				print ("e2 = ", round(e_n_mais_um[1,0],3))
+				
 				break
 				
 				
@@ -678,9 +685,7 @@ def menu():
 				
 				if (p == 99):
 					print ("e1 = ", e_n_mais_um[0,0])
-					print ("e2 = ", e_n_mais_um[1,0])
-			
-			
+					print ("e2 = ", e_n_mais_um[1,0])		
 			p+=1
 		
 		print()
