@@ -721,8 +721,8 @@ def menu():
 		I = np.zeros((4,1))
 		
 		##fonte de corrente controlada por duas tensoes
-		Gm1 = 2*e[0] #fonte de corrente controlada
-		Gm2 = 2*e[1] #fonte de corrente controlada
+		Gm1 = 2*e[1] #fonte de corrente controlada
+		Gm2 = 2*e[0] #fonte de corrente controlada
 		I1 = -2*e[0]*e[1] #fonte de corrente 
 		
 		#construindo a matriz
@@ -756,7 +756,7 @@ def menu():
 		
 		p = 0
 		
-		while (p < 50):
+		while (p < 100):
 
 			e_n_mais_um[0,0] = round(float(e_n_mais_um [0,0]),1)
 			e_n_mais_um[1,0] = round(float(e_n_mais_um [1,0]),1)
@@ -775,8 +775,8 @@ def menu():
 				e = [e_n_mais_um[0,0],e_n_mais_um[1,0]]
 				
 				##fonte de corrente controlada por duas tensoes
-				Gm1 = 2*e[0] #fonte de corrente controlada
-				Gm2 = 2*e[1] #fonte de corrente controlada
+				Gm1 = 2*e[1] #fonte de corrente controlada
+				Gm2 = 2*e[0] #fonte de corrente controlada
 				I1 = -2*e[0]*e[1] #fonte de corrente 
 				
 				#construindo a matriz
@@ -807,21 +807,13 @@ def menu():
 				
 				
 				
-				
 				if(math.isnan(e_n_mais_um[0,0])):
 					print("Solução divergente!")
 					break
 				
 				else:
-					if (p == 48):
-						print ("e1 = ", e_n_mais_um[0,0])
-						print ("e2 = ", e_n_mais_um[1,0])
-						print ("e3 = ", e_n_mais_um[2,0])
-				
-					if (p == 49):
-						print ("e1 = ", e_n_mais_um[0,0])
-						print ("e2 = ", e_n_mais_um[1,0])
-						print ("e3 = ", e_n_mais_um[2,0])
+					if (p == 99 and e_n_mais_um [0,0] != e[0] and e_n_mais_um [1,0] != e[1]):
+						print("Não converge!")
 			
 			
 			
