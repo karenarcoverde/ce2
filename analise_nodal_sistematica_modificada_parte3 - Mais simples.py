@@ -714,32 +714,23 @@ def menu():
 		
 		
 	
-		e1n = sp.symbols("e1n",real=True)
-		e2n = sp.symbols("e2n",real=True)
+		e=[0,0]
+
 		
 		yn = np.zeros((4,4))
 		I = np.zeros((4,1))
 		
 		##fonte de corrente controlada por duas tensoes
-		Gm1 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
-		Gm2 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
-		I1 = 2*e2n*e1n -Gm1*e2n -Gm2*e1n #fonte de corrente 
-		
-		I1 = I1.subs(e1n,0)
-		I1 = I1.subs(e2n,0)
-		Gm1 = Gm1.subs(e1n,0)
-		Gm1 = Gm1.subs(e2n,0)
-		Gm2 = Gm2.subs(e1n,0)
-		Gm2 = Gm2.subs(e2n,0)
-		
-		
+		Gm1 = 2*e[0] #fonte de corrente controlada
+		Gm2 = 2*e[1] #fonte de corrente controlada
+		I1 = -2*e[0]*e[1] #fonte de corrente 
 		
 		#construindo a matriz
 		I[0,0] = -I1 +2
 		I[1,0] = -2
 		I[2,0] = I1
 		I[3,0] = -2
-		yn[0,0] = 1 +Gm1
+		yn[0,0] = 1+Gm1
 		yn[0,1] = Gm2
 		yn[0,2] = 0
 		yn[0,3] = 0
@@ -754,7 +745,7 @@ def menu():
 		yn[3,0] = 0
 		yn[3,1] = -1
 		yn[3,2] = 1
-		yn[3,3] = 0
+		yn[3,3] = 0 
 		
 	
 		
@@ -764,16 +755,15 @@ def menu():
 		
 		
 		p = 0
-	
-		e1n = e1n.subs(e1n,0)
-		e2n = e2n.subs(e2n,0)
-		
-	
 		
 		while (p < 50):
 
+			e_n_mais_um[0,0] = round(float(e_n_mais_um [0,0]),1)
+			e_n_mais_um[1,0] = round(float(e_n_mais_um [1,0]),1)
+			e[0] = round(float(e[0]),1)
+			e[1] = round(float(e[1]),1)
 			
-			if (float(e_n_mais_um [0,0]) == float(e1n) and float(e_n_mais_um[1,0]) == float(e2n)):
+			if (e_n_mais_um [0,0] == e[0] and e_n_mais_um[1,0] == e[1]):
 				print ("e1 = ", e_n_mais_um[0,0])
 				print ("e2 = ", e_n_mais_um[1,0])
 				print ("e3 = ", e_n_mais_um[2,0])
@@ -782,31 +772,24 @@ def menu():
 				
 			
 			else:
-				e1n = sp.symbols("e1n",real=True)
-				e2n = sp.symbols("e2n",real=True)
-				##fonte de corrente controlada por duas tensoes
-				Gm1 = Derivative(2*e2n*e1n,e1n).doit() #fonte de corrente controlada
-				Gm2 = Derivative(2*e2n*e1n,e2n).doit() #fonte de corrente controlada
-				I1 = 2*e2n*e1n -Gm1*e1n -Gm2*e2n #fonte de corrente 
+				e = [e_n_mais_um[0,0],e_n_mais_um[1,0]]
 				
-				I1 = I1.subs(e1n,e_n_mais_um[0,0])
-				I1 = I1.subs(e2n,e_n_mais_um[1,0])
-				Gm1 = Gm1.subs(e1n,e_n_mais_um[0,0])
-				Gm1 = Gm1.subs(e2n,e_n_mais_um[1,0])
-				Gm2 = Gm2.subs(e1n,e_n_mais_um[0,0])
-				Gm2 = Gm2.subs(e2n,e_n_mais_um[1,0])
+				##fonte de corrente controlada por duas tensoes
+				Gm1 = 2*e[0] #fonte de corrente controlada
+				Gm2 = 2*e[1] #fonte de corrente controlada
+				I1 = -2*e[0]*e[1] #fonte de corrente 
 				
 				#construindo a matriz
 				I[0,0] = -I1 +2
 				I[1,0] = -2
 				I[2,0] = I1
 				I[3,0] = -2
-				yn[0,0] = 1
-				yn[0,1] = 0
+				yn[0,0] = 1+Gm1
+				yn[0,1] = Gm2
 				yn[0,2] = 0
 				yn[0,3] = 0
-				yn[1,0] = Gm1
-				yn[1,1] = 1 +Gm2
+				yn[1,0] = 0
+				yn[1,1] = 1
 				yn[1,2] = 0
 				yn[1,3] = 1
 				yn[2,0] = -Gm1
@@ -817,11 +800,7 @@ def menu():
 				yn[3,1] = -1
 				yn[3,2] = 1
 				yn[3,3] = 0 
-				
-				e1n = e1n.subs(e1n, e_n_mais_um[0,0])
-				e2n = e2n.subs(e2n, e_n_mais_um[1,0])
-				
-				
+		
 				
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
@@ -849,6 +828,7 @@ def menu():
 			p+=1
 		
 		print()
+		
 		
 		
 		########### circuito 3
