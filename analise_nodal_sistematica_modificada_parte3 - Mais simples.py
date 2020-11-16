@@ -905,8 +905,196 @@ def menu():
 		
 		print()
 		
+		##chute [-5,-0.3]
+		Ixn = [-5,-0.3]
+		yn = np.zeros((6,6))
+		I = np.zeros((6,1))
 		
-		Ixn = [5,9]
+		##fonte de corrente controlada por duas correntes
+		B0 = 2/Ixn[1] #fonte de corrente controlada
+		B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
+		I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
+		
+		
+		#print(I0)
+		#print(B1)
+		#print(B0)
+		
+		
+		#print(I0)
+		#print(B1)
+		#print(B0)
+		
+		
+		#construindo a matriz
+		I[0,0] = -I0
+		I[1,0] = 0
+		I[2,0] = 10
+		I[3,0] = I0
+		I[4,0] = 0
+		I[5,0] = 0
+		yn[0,0] = 1/2
+		yn[0,1] = 0
+		yn[0,2] = 0
+		yn[0,3] = 0
+		yn[0,4] = B0 +1
+		yn[0,5] = B1
+		yn[1,0] = 0
+		yn[1,1] = 2
+		yn[1,2] = -1
+		yn[1,3] = 0
+		yn[1,4] = -1
+		yn[1,5] = 0
+		yn[2,0] = 0
+		yn[2,1] = -1
+		yn[2,2] = 1
+		yn[2,3] = 0
+		yn[2,4] = 0
+		yn[2,5] = 1
+		yn[3,0] = 0
+		yn[3,1] = 0
+		yn[3,2] = 0
+		yn[3,3] = 1/2
+		yn[3,4] = -B0
+		yn[3,5] = -B1-1
+		yn[4,0] = -1
+		yn[4,1] = 1
+		yn[4,2] = 0
+		yn[4,3] = 0
+		yn[4,4] = 0
+		yn[4,5] = 0
+		yn[5,0] = 0
+		yn[5,1] = 0
+		yn[5,2] = -1
+		yn[5,3] = 1
+		yn[5,4] = 0
+		yn[5,5] = 0
+		
+		#print(yn)
+		#print(I)
+	
+		
+		inv_yn = np.linalg.inv(yn)
+		e_n_mais_um = np.dot(inv_yn, I)
+		
+		#print(e_n_mais_um)
+		
+		p = 0
+	
+		
+		
+	
+		
+		while (p < 100):
+		
+			e_n_mais_um[4,0] = round(float(e_n_mais_um [4,0]),9)
+			e_n_mais_um[5,0] = round(float(e_n_mais_um [5,0]),9)
+			Ixn[0] = round(float(Ixn[0]),9)
+			Ixn[1] = round(float(Ixn[1]),9)
+			
+		
+			
+			if (e_n_mais_um [4,0] == Ixn[0] and e_n_mais_um[5,0] == Ixn[1]):
+			
+				print ("e1 = ", round(e_n_mais_um[0,0],3))
+				print ("e2 = ", round(e_n_mais_um[1,0],3))
+				print ("e3 = ", round(e_n_mais_um[2,0],3))
+				print ("e4 = ", round(e_n_mais_um[3,0],3))
+				
+				break
+				
+				
+			
+			else:
+				Ixn = [e_n_mais_um[4,0],e_n_mais_um[5,0]]
+				##fonte de corrente controlada por duas correntes
+				B0 = 2/Ixn[1] #fonte de corrente controlada
+				B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
+				I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
+					
+				
+					
+				#print(I0)
+				#print(B0)
+				#print(B1)
+				
+				#construindo a matriz
+				I[0,0] = -I0
+				I[1,0] = 0
+				I[2,0] = 10
+				I[3,0] = I0
+				I[4,0] = 0
+				I[5,0] = 0
+				yn[0,0] = 1/2
+				yn[0,1] = 0
+				yn[0,2] = 0
+				yn[0,3] = 0
+				yn[0,4] = B0 +1
+				yn[0,5] = B1
+				yn[1,0] = 0
+				yn[1,1] = 2
+				yn[1,2] = -1
+				yn[1,3] = 0
+				yn[1,4] = -1
+				yn[1,5] = 0
+				yn[2,0] = 0
+				yn[2,1] = -1
+				yn[2,2] = 1
+				yn[2,3] = 0
+				yn[2,4] = 0
+				yn[2,5] = 1
+				yn[3,0] = 0
+				yn[3,1] = 0
+				yn[3,2] = 0
+				yn[3,3] = 1/2
+				yn[3,4] = -B0
+				yn[3,5] = -B1-1
+				yn[4,0] = -1
+				yn[4,1] = 1
+				yn[4,2] = 0
+				yn[4,3] = 0
+				yn[4,4] = 0
+				yn[4,5] = 0
+				yn[5,0] = 0
+				yn[5,1] = 0
+				yn[5,2] = -1
+				yn[5,3] = 1
+				yn[5,4] = 0
+				yn[5,5] = 0
+					
+				#print(yn)
+				#print(I)
+				
+	
+					
+				#print(Ixn)
+				#print(Iyn)
+				
+					
+				inv_yn = np.linalg.inv(yn)
+				e_n_mais_um = np.dot(inv_yn, I)
+				
+				#print(e_n_mais_um)
+				
+				
+					
+				if(math.isnan(e_n_mais_um[0,0])):
+					print("Solução divergente!")
+					break
+					
+				else:
+					
+					if (p == 99):
+						print ("e1 = ", e_n_mais_um[0,0])
+						print ("e2 = ", e_n_mais_um[1,0])
+						print ("e3 = ", e_n_mais_um[2,0])
+						print ("e4 = ", e_n_mais_um[3,0])		
+				
+				p+=1
+			
+		
+		##chute [0.1,0.05]
+		Ixn = [0.1,0.05]
 		yn = np.zeros((6,6))
 		I = np.zeros((6,1))
 		
