@@ -609,13 +609,10 @@ def menu():
 		print(jacobiano_circuito1)
 		print()
 		
-		
-		
-		
 		yn = np.zeros((2,2))
 		I = np.zeros((2,1))
 		
-		e = [0.1,0.05]
+		e = [2,1]
 		
 		
 		##resistencia
@@ -627,19 +624,7 @@ def menu():
 		##fonte de corrente controlada por tensao
 		Gm2 = 6*e[1] #fonte de corrente
 		I2 = -3*e[1]**2 #fonte de corrente
-		
-		#print(G1)
-		#print(I1)
-		#print(Gm2)
-		#print(I2)
-		
-		
-		#print(G1)
-		#print(I1)
-		#print(Gm2)
-		#print(I2)
-	
-		
+			
 		#construindo a matriz
 		I[0,0] = I1 - I2 +1
 		I[1,0] = -I1 +I2
@@ -648,17 +633,11 @@ def menu():
 		yn[0,1] = -G1 +Gm2
 		yn[1,0] = -G1 
 		
-		#print(yn)
-		#print(I)
-		
 		inv_yn = np.linalg.inv(yn)
 		e_n_mais_um = np.dot(inv_yn, I)
 		
 		p = 0
 	
-		
-		
-		#print(e_n_mais_um)
 		
 		while (p < 100):
 
@@ -680,20 +659,7 @@ def menu():
 		
 				##fonte de corrente controlada por tensao
 				Gm2 = 6*e[1] #fonte de corrente
-				I2 = -3*e[1]**2 #fonte de corrente
-				
-				
-				
-				
-				
-				
-				
-				#print(G1)
-				#print(I1)
-				#print(Gm2)
-				#print(I2)
-				
-				
+				I2 = -3*e[1]**2 #fonte de corrente						
 				
 				I[0,0] = I1 - I2 +1
 				I[1,0] = -I1 +I2
@@ -702,17 +668,9 @@ def menu():
 				yn[0,1] = -G1 +Gm2
 				yn[1,0] = -G1 
 				
-				#print(yn)
-				#print(I)
-				
-				
-				#print(e[0])
-				#print(e[1])
-				
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
 				
-				#print(e_n_mais_um)
 				
 				if (p == 98):
 					print ("e1 = ", e_n_mais_um[0,0])
@@ -914,18 +872,7 @@ def menu():
 		B0 = 2/Ixn[1] #fonte de corrente controlada
 		B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
 		I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
-		
-		
-		#print(I0)
-		#print(B1)
-		#print(B0)
-		
-		
-		#print(I0)
-		#print(B1)
-		#print(B0)
-		
-		
+				
 		#construindo a matriz
 		I[0,0] = -I0
 		I[1,0] = 0
@@ -970,20 +917,10 @@ def menu():
 		yn[5,4] = 0
 		yn[5,5] = 0
 		
-		#print(yn)
-		#print(I)
-	
-		
 		inv_yn = np.linalg.inv(yn)
 		e_n_mais_um = np.dot(inv_yn, I)
 		
-		#print(e_n_mais_um)
-		
 		p = 0
-	
-		
-		
-	
 		
 		while (p < 100):
 		
@@ -1011,12 +948,6 @@ def menu():
 				B0 = 2/Ixn[1] #fonte de corrente controlada
 				B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
 				I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
-					
-				
-					
-				#print(I0)
-				#print(B0)
-				#print(B1)
 				
 				#construindo a matriz
 				I[0,0] = -I0
@@ -1062,22 +993,9 @@ def menu():
 				yn[5,4] = 0
 				yn[5,5] = 0
 					
-				#print(yn)
-				#print(I)
-				
-	
-					
-				#print(Ixn)
-				#print(Iyn)
-				
-					
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
-				
-				#print(e_n_mais_um)
-				
-				
-					
+								
 				if(math.isnan(e_n_mais_um[0,0])):
 					print("Solução divergente!")
 					break
@@ -1101,18 +1019,7 @@ def menu():
 		##fonte de corrente controlada por duas correntes
 		B0 = 2/Ixn[1] #fonte de corrente controlada
 		B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
-		I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
-		
-		
-		#print(I0)
-		#print(B1)
-		#print(B0)
-		
-		
-		#print(I0)
-		#print(B1)
-		#print(B0)
-		
+		I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 	
 		
 		#construindo a matriz
 		I[0,0] = -I0
@@ -1158,21 +1065,11 @@ def menu():
 		yn[5,4] = 0
 		yn[5,5] = 0
 		
-		#print(yn)
-		#print(I)
-	
-		
 		inv_yn = np.linalg.inv(yn)
 		e_n_mais_um = np.dot(inv_yn, I)
 		
-		#print(e_n_mais_um)
-		
 		p = 0
 	
-		
-		
-	
-		
 		while (p < 100):
 		
 			e_n_mais_um[4,0] = round(float(e_n_mais_um [4,0]),9)
@@ -1200,12 +1097,6 @@ def menu():
 				B1 = -2*Ixn[0]/Ixn[1]**2 #fonte de corrente controlada
 				I0 = 2*Ixn[0]/Ixn[1] #fonte de corrente 
 					
-				
-					
-				#print(I0)
-				#print(B0)
-				#print(B1)
-				
 				#construindo a matriz
 				I[0,0] = -I0
 				I[1,0] = 0
@@ -1249,23 +1140,10 @@ def menu():
 				yn[5,3] = 1
 				yn[5,4] = 0
 				yn[5,5] = 0
-					
-				#print(yn)
-				#print(I)
-				
-	
-					
-				#print(Ixn)
-				#print(Iyn)
-				
-					
+							
 				inv_yn = np.linalg.inv(yn)
 				e_n_mais_um = np.dot(inv_yn, I)
-				
-				#print(e_n_mais_um)
-				
-				
-					
+						
 				if(math.isnan(e_n_mais_um[0,0])):
 					print("Solução divergente!")
 					break
@@ -1285,7 +1163,7 @@ def menu():
 		
 		
 		
-		
+
 	
 	
 	else:
